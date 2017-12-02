@@ -1,7 +1,7 @@
 import os
 import time
 import json
-# import weather
+import weather
 from misc import apis
 from slackclient import SlackClient
 
@@ -56,9 +56,11 @@ def topics(value):
                                                     data["help"][2],
                                                     data["help"][4],
                                                     data["help"][6])
-    elif value == "weather" or value == "clear joins" or \
-            value == "purge room" or value == "movies":
+    elif value == "clear joins" or value == "purge room" or value == "movies":
         return data[value]
+    elif value == "weather":
+        # weather.user_input(85226)
+        return weather.slack_response(int(85226), False)
     elif value == "help weather":
         return data["help"][1]
     elif value == "help purge room":

@@ -33,6 +33,7 @@ if user_pick == 7:
     user_want_forecast = True
 """
 
+
 def remove_spaces(user_data):
     """
     Simple regex to remove all spaces in the user's input
@@ -43,7 +44,7 @@ def remove_spaces(user_data):
     return fixed_user_input
 
 
-user_input = remove_spaces(original_user_input)
+# user_input = remove_spaces(original_user_input)
 
 
 def weather_url(user_entry, daily_or_weekly):
@@ -61,7 +62,7 @@ def weather_url(user_entry, daily_or_weekly):
     city_url = "q="
     number_forecast_days = "&cnt=7"
 
-    if user_entry.isdigit() and not daily_or_weekly:
+    if user_entry and not daily_or_weekly:
         return "{}{}{}{}".format(daily_partial_url, zip_code_url, str(user_entry), api_key)
     elif not daily_or_weekly:
         return "{}{}{}{}".format(daily_partial_url, city_url, str(user_entry), api_key)
@@ -86,14 +87,15 @@ class WeatherConversion:
         if days == 1:
             open_weather = urlopen(self.full_url).read().decode("utf8")
             read_json = json.loads(open_weather)
+            location = read_json["name"]
             outside = self.get_outside_outlook(read_json["weather"])
             wind_speed = read_json["wind"]["speed"]
-            wind_direction = self.deg_to_compass(read_json["wind"]["deg"])
+            # wind_direction = self.deg_to_compass(read_json["wind"]["deg"])
             current_temp = self.convert_temp(read_json["main"]["temp"])
-            print("Current Temperature: {:.2f}\xb0\n"
-                  "Sky: {}\n"
-                  "Wind speed: {} MPH\n"
-                  "Wind direction: {}".format(current_temp, outside, wind_speed, wind_direction))
+            return "Weather for {}:\n \
+                    Current Temperature: {:.2f}\n \
+                    Sky: {}\n \
+                    Wind speed: {} MPH".format(location, current_temp, outside, wind_speed)
         else:
             open_weather = urlopen(self.full_url).read().decode("utf8")
             read_json = json.loads(open_weather)
@@ -107,7 +109,7 @@ class WeatherConversion:
 
             Each of these will need to be added to a list or a dictionary to print relationally
             """
-            print(outside)
+            return outside
 
     def get_outside_outlook(self, weather_description):
         """
@@ -142,7 +144,14 @@ class WeatherConversion:
         return datetime.fromtimestamp(dt).strftime("%Y-%m-%d")
 
 
-full_weather_url = weather_url(user_input, user_want_forecast)
-# print(json.dumps(read_json, indent=4, sort_keys=True))
-values = WeatherConversion(full_weather_url)
-values.print_weather(1)
+def slack_response(user_input, user_want_forecast):
+    """
+
+    :param user_input:
+    :param user_want_forecast:
+    :return:
+    """
+    full_weather_url = weather_url(user_input, user_want_forecast)
+    # print(json.dumps(read_json, indent=4, sort_keys=True))
+    values = WeatherConversion(full_weather_url)
+    return values.print_weather(1)
