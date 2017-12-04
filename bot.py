@@ -1,4 +1,3 @@
-import os
 import time
 import json
 import weather
@@ -14,6 +13,9 @@ AT_BOT = "<@" + BOT_ID + ">"
 # instantiate Slack
 slack_client = SlackClient(apis.rls())
 
+# load our json file that contains basic commands
+data = json.load(open(r"C:\Users\michael.f.koegel\PycharmProjects\slack_bot\slack_messages.json"))
+
 
 def handle_command(command, channel):
     """
@@ -21,7 +23,7 @@ def handle_command(command, channel):
         are valid commands. If so, then acts on the commands. If not,
         returns back what it needs for clarification.
     """
-    response = command
+    response = topics(command)
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
@@ -48,40 +50,34 @@ def topics(value):
     :param value:
     :return:
     """
-    # TODO: create this data in a DB so that the code is reusable and not ugly - data["help"][0] is useless
-    data = json.load(open(r"C:\Users\michael.f.koegel\PycharmProjects\slack_bot\slack_messages.json"))
-
-    if value == "help":
-        return "Help Topics: {}, {}, {}, {}".format(data["help"][0],
-                                                    data["help"][2],
-                                                    data["help"][4],
-                                                    data["help"][6])
-    elif value == "clear joins" or value == "purge room" or value == "movies":
-        return data[value]
+    if "help" in value:
+        split_value = value.split("help")[1].strip()
+        if split_value == "":
+            return "Help Topics: {}".format(", ".join(key for key, value in data["help"].items()))
+        else:
+            try:
+                return data["help"][split_value]
+            except KeyError:
+                return "I don't have a help file for that command. Adding {} to the backlog".format(value)
     elif value == "weather":
         # weather.user_input(85226)
         return weather.slack_response(int(85226), False)
-    elif value == "help weather":
-        return data["help"][1]
-    elif value == "help purge room":
-        return data["help"][3]
-    elif value == "help clear joins":
-        return data["help"][5]
-    elif value == "help movies":
-        return data["help"][7]
     else:
-        return "I don't have code for that. I'll work on it."
+        try:
+            return data[value]
+        except KeyError:
+            return "I'll add {} to my list of features to add".format(value)
 
 
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1  # 1 second delay between reading from fire hose
     if slack_client.rtm_connect():
-        print("rlsbot is connected and running!")
+        print("RLSBot is connected and running!")
         while True:
             command, channel = parse_slack_output(slack_client.rtm_read())
-            user_command = topics(command)
-            if user_command and channel:
-                handle_command(user_command, channel)
+            #user_command = topics(command)
+            if command and channel:
+                handle_command(command, channel)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
         print("Connection failed. Invalid Slack token or bot ID?")
