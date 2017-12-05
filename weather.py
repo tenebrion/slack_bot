@@ -80,10 +80,10 @@ class WeatherConversion:
             wind_speed = read_json["wind"]["speed"]
             # wind_direction = self.deg_to_compass(read_json["wind"]["deg"])
             current_temp = self.convert_temp(read_json["main"]["temp"])
-            return "Weather for {}:\n\
-                    Current Temperature: {:.2f}\n\
-                    Sky: {}\n\
-                    Wind speed: {} MPH".format(location, current_temp, outside, wind_speed)
+            return "Weather for {}:\n" \
+                   "Current Temperature: {:.2f}\n" \
+                   "Sky: {}\n" \
+                   "Wind speed: {} MPH".format(location, current_temp, outside, wind_speed)
         else:
             open_weather = urlopen(self.full_url).read().decode("utf8")
             read_json = json.loads(open_weather)
