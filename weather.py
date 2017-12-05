@@ -20,18 +20,6 @@ from misc import apis
 import re
 
 # TODO: Refactor this to tie into my Slack bot
-"""
-print("Welcome to our weather station.")
-print("Would you like the daily weather or a 7 day forecast?")
-print("Press 1 for daily or 7 for forecast")
-user_want_forecast = False
-user_pick = int(input())
-print("Please enter the city or zip code you would like to check the current temperatures for:")
-original_user_input = input()
-
-if user_pick == 7:
-    user_want_forecast = True
-"""
 
 
 def remove_spaces(user_data):
@@ -92,9 +80,9 @@ class WeatherConversion:
             wind_speed = read_json["wind"]["speed"]
             # wind_direction = self.deg_to_compass(read_json["wind"]["deg"])
             current_temp = self.convert_temp(read_json["main"]["temp"])
-            return "Weather for {}:\n \
-                    Current Temperature: {:.2f}\n \
-                    Sky: {}\n \
+            return "Weather for {}:\n\
+                    Current Temperature: {:.2f}\n\
+                    Sky: {}\n\
                     Wind speed: {} MPH".format(location, current_temp, outside, wind_speed)
         else:
             open_weather = urlopen(self.full_url).read().decode("utf8")
@@ -152,6 +140,5 @@ def slack_response(user_input, user_want_forecast):
     :return:
     """
     full_weather_url = weather_url(user_input, user_want_forecast)
-    # print(json.dumps(read_json, indent=4, sort_keys=True))
     values = WeatherConversion(full_weather_url)
     return values.print_weather(1)

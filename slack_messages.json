@@ -3,7 +3,7 @@
     "weather": "usage: weather 85226. This will return forecast from an area code entered.",
     "purge room": "usage: purge room. This will clear the room history.",
     "clear joins": "usage: clear joins. This will clear all user joined room messages.",
-    "movies": "usage: movies. This will list my favorite movie...for now."
+    "movies": "usage: movies {Movie Title}. This will list my favorite movie...for now."
   },
   "weather": "grab weather from nifty program i made.",
   "purge room": "hides room history in slack channel",

@@ -1,6 +1,7 @@
 import time
 import json
 import weather
+import movies
 from misc import apis
 from slackclient import SlackClient
 
@@ -59,14 +60,22 @@ def topics(value):
                 return data["help"][split_value]
             except KeyError:
                 return "I don't have a help file for that command. Adding {} to the backlog".format(value)
-    elif value == "weather":
-        # weather.user_input(85226)
-        return weather.slack_response(int(85226), False)
+    elif "weather" in value:
+        split_value = value.split("weather")[1].strip()
+        return weather.slack_response(split_value, False)
+    elif "movies" in value:
+        split_value = value.split("movies")[1].strip()
+        return movie_info(split_value)
     else:
         try:
             return data[value]
         except KeyError:
             return "I'll add {} to my list of features to add".format(value)
+
+
+def movie_info(movie):
+    title, release_date, overview = movies.prep_title(movie)
+    return "{} ({}): {}".format(title, release_date, overview)
 
 
 if __name__ == "__main__":
