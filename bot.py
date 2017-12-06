@@ -2,6 +2,7 @@ import time
 import json
 import weather
 import movies
+import nasa
 from misc import apis
 from slackclient import SlackClient
 
@@ -63,9 +64,11 @@ def topics(value):
     elif "weather" in value:
         split_value = value.split("weather")[1].strip()
         return weather.slack_response(split_value, False)
-    elif "movies" in value:
+    elif ("movies" or "asteroid") in value:
         split_value = value.split("movies")[1].strip()
         return movie_info(split_value)
+    elif "photo" in value:
+        return nasa.nasa(value)
     else:
         try:
             return data[value]

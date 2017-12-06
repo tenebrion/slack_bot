@@ -3,10 +3,10 @@
     "weather": "usage: weather 85226. This will return forecast from an area code entered.",
     "purge room": "usage: purge room. This will clear the room history.",
     "clear joins": "usage: clear joins. This will clear all user joined room messages.",
-    "movies": "usage: movies {Movie Title}. This will list my favorite movie...for now."
+    "movies": "usage: movies {Movie Title}. This will list my favorite movie...for now.",
+    "asteroid": "usage: asteroid 2017-10-01 2017-12-06. This uses a date range. First is start date, then end date",
+    "photo": "usage photo or photo 2017-10-10. Using photo gives you today's nasa image. Otherwise, specify a date"
   },
-  "weather": "grab weather from nifty program i made.",
   "purge room": "hides room history in slack channel",
-  "clear joins": "remove all user has joined channel messages",
-  "movies": "list my favorite movie"
+  "clear joins": "remove all user has joined channel messages"
 }
