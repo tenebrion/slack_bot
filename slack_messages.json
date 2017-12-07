@@ -4,7 +4,7 @@
     "purge room": "usage: purge room. This will clear the room history.",
     "clear joins": "usage: clear joins. This will clear all user joined room messages.",
     "movies": "usage: movies {Movie Title}. This will list my favorite movie...for now.",
-    "asteroid": "usage: asteroid 2017-10-01 2017-12-06. This uses a date range. First is start date, then end date",
+    "asteroid": "This may get removed. There is a lot of data / images that would bloat Slack channels",
     "photo": "usage photo or photo 2017-10-10. Using photo gives you today's nasa image. Otherwise, specify a date"
   },
   "purge room": "hides room history in slack channel",

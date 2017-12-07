@@ -15,7 +15,7 @@ def daily_photo(user_date):
     :return:
 	"""
 	planet_url = "https://api.nasa.gov/planetary/apod?"
-	planet_date_prep = "?date="
+	planet_date_prep = "date="
 	if user_date == "photo":
 		photo_url = planet_url + api_key
 		with urlopen(photo_url) as response:
@@ -42,7 +42,14 @@ def asteroids(start_date, end_date):
 	asteroid_url = "https://api.nasa.gov/neo/rest/v1/feed?"
 	asteroid_start_prep = "start_date="
 	asteroid_end_prep = "&end_date="
-	return asteroid_url + asteroid_start_prep + start_date + asteroid_end_prep + end_date + api_key
+	asteroid_url = asteroid_url + asteroid_start_prep + start_date + asteroid_end_prep + end_date + api_key
+	with urlopen(asteroid_url) as response:
+		data = response.read()
+	encoding = response.headers.get_content_charset('utf-8')
+	json_prep = data.decode(encoding)
+	json_format = json_prep.replace("\n", "")
+	asteroid_json = json.loads(json_format)
+	return asteroid_json["hdurl"]
 
 
 def nasa(nasa_request):
