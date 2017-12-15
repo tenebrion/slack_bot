@@ -5,7 +5,9 @@
     "clear joins": "usage: clear joins. This will clear all user joined room messages.",
     "movies": "usage: movies {Movie Title}. This will list my favorite movie...for now.",
     "asteroid": "This may get removed. There is a lot of data / images that would bloat Slack channels",
-    "photo": "usage photo or photo 2017-10-10. Using photo gives you today's nasa image. Otherwise, specify a date"
+    "photo": "usage photo or photo 2017-10-10. Using photo gives you today's nasa image. Otherwise, specify a date",
+    "define": "usage: define crazy. This will provide the definition of any word in the oxford dictionary",
+    "books": "usage: books enders game. This will provide book information for any book on GoodReads"
   },
   "purge room": "hides room history in slack channel",
   "clear joins": "remove all user has joined channel messages"
