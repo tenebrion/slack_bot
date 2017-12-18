@@ -7,6 +7,7 @@
     "asteroid": "This may get removed. There is a lot of data / images that would bloat Slack channels",
     "photo": "usage photo or photo 2017-10-10. Using photo gives you today's nasa image. Otherwise, specify a date",
     "define": "usage: define crazy. This will provide the definition of any word in the oxford dictionary",
+    "syn-ant": "usage: syn-ant ace. This will provide the synonym and antonyms of a word",
     "books": "usage: books enders game. This will provide book information for any book on GoodReads"
   },
   "purge room": "hides room history in slack channel",

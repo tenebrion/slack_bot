@@ -76,7 +76,10 @@ def topics(value):
         return books.book_info(split_value)
     elif "define" in value:
         split_value = value.split("define")[1].strip()
-        return dictionary.return_data(split_value)
+        return dictionary.return_definition(split_value)
+    elif "syn-ant" in value in value:
+        split_value = value.split("syn-ant")[1].strip()
+        return dictionary.return_syn_ant(split_value)
     else:
         try:
             return data[value]
