@@ -5,6 +5,7 @@ import movies
 import nasa
 import dictionary
 import books
+import spacex
 from misc import apis
 from slackclient import SlackClient
 
@@ -77,9 +78,11 @@ def topics(value):
     elif "define" in value:
         split_value = value.split("define")[1].strip()
         return dictionary.return_definition(split_value)
-    elif "syn-ant" in value in value:
+    elif "syn-ant" in value:
         split_value = value.split("syn-ant")[1].strip()
         return dictionary.return_syn_ant(split_value)
+    elif "spacex" in value:
+        return spacex.return_next_launch()
     else:
         try:
             return data[value]
