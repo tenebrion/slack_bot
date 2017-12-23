@@ -7,8 +7,10 @@ from urllib.request import urlopen
 
 def return_next_launch():
     """
-    This is a quick a dirty function to print the next SpaceX launch
-    :return:
+    This is a quick a dirty function to print the next SpaceX launch. I don't print / display
+    anything more than the next flight. This is because SpaceX doesn't provide it until it locks
+    down the info, location, time, etc.
+    :return: flight_number, launch date, payload info, flight time
     """
     url = "https://api.spacexdata.com/v2/launches/upcoming"
     a_url = "https://api.spacexdata.com/v2/launches/upcoming?launch_year=2017"
@@ -19,6 +21,8 @@ def return_next_launch():
     encode = response.headers.get_content_charset('utf-8')
     json_prep = data.decode(encode)
     spacex_data = json.loads(json_prep)
+    # setting up our list variables. This is because SpaceX knows about the next ~3 launches,
+    # but only provides full details of the next launch.
     flight_nums = []
     launch_dates = []
     rocket_names = []
@@ -66,6 +70,9 @@ def return_next_launch():
         except ValueError:
             continue
 
+        # I am limiting this to the current upcoming flight. This is because
+        # SpaceX doesn't publish a lot of information about flights that aren't 'hard'
+        # scheduled. I know everyone wants more than one flight listed, but I don't control it.
         return f"Flight Number: {flight_nums[0]}\n" \
                f"Launch Date: {launches[0]}\n" \
                f"Rocket Type: {rocket_names[0]}\n" \

@@ -51,9 +51,11 @@ def parse_slack_output(slack_rtm_output):
 
 def topics(value):
     """
-    I'll add info later
+    This function is what calls all the other functions depending on what the user wants.
+    There has to be a better way to accomplish this instead of all the if / elif / else.
+    I've tried functions, dictionaries, but I can't get them to initiate function calls
     :param value:
-    :return:
+    :return: topic
     """
     if "help" in value:
         split_value = value.split("help")[1].strip()

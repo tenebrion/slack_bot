@@ -39,6 +39,13 @@ def daily_photo(user_date):
 
 
 def asteroids(start_date, end_date):
+	"""
+	This function will display asteroid info. Right now I'm not using it because there is
+	way too much data to present. I'm only using this to post info to slack.
+	:param start_date:
+	:param end_date:
+	:return: asteroid_json
+	"""
 	asteroid_url = "https://api.nasa.gov/neo/rest/v1/feed?"
 	asteroid_start_prep = "start_date="
 	asteroid_end_prep = "&end_date="
@@ -53,6 +60,11 @@ def asteroids(start_date, end_date):
 
 
 def nasa(nasa_request):
+	"""
+	this function will return the url for Nasa photos.
+	:param nasa_request:
+	:return: asteroids
+	"""
 	if "photo" in nasa_request:
 		split_value = nasa_request.split("photo")[1].strip()
 		if split_value == "":

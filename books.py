@@ -4,6 +4,11 @@ from xml.etree import ElementTree as ET
 
 
 def book_info(book):
+    """
+    This function takes a book name and return all information about the book
+    :param book:
+    :return: book_title, num_pages, book_author, book_pub_date, book_synopsis
+    """
     api_key = apis.books()
     goodreads_url = "https://www.goodreads.com/book/title.xml?key="
     title_prep = "&title="
@@ -13,7 +18,9 @@ def book_info(book):
     with urllib.request.urlopen(url) as url_xml:
         root = ET.parse(url_xml).getroot()
 
+    # This will provide us the root of the xml file
     items = root.findall("book")
+    # XML is super easy to loop through
     for item in items:
         book_title = item.find("title").text
         book_synopsis = item.find("description").text
