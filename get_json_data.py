@@ -6,7 +6,7 @@ from urllib.request import urlopen
 
 def grab_json_data(url, need_headers=None, app_id=None, app_key=None):
     """
-
+    This function grabs content from remote APIs and converts it to useful json data
     :param url:
     :param need_headers:
     :param app_id:

@@ -1,8 +1,5 @@
 import time
-import json
-import urllib
-from urllib import request
-from urllib.request import urlopen
+import get_json_data
 
 
 def return_next_launch():
@@ -14,13 +11,7 @@ def return_next_launch():
     """
     url = "https://api.spacexdata.com/v2/launches/upcoming"
     # a_url = "https://api.spacexdata.com/v2/launches/upcoming?launch_year=2017"
-    req = urllib.request.Request(url)
-    with urlopen(req) as response:
-        data = response.read()
-
-    encode = response.headers.get_content_charset('utf-8')
-    json_prep = data.decode(encode)
-    spacex_data = json.loads(json_prep)
+    spacex_data = get_json_data.grab_json_data(url)
     # setting up our list variables. This is because SpaceX knows about the next ~3 launches,
     # but only provides full details of the next launch.
     flight_nums = []

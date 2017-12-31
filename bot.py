@@ -69,10 +69,10 @@ def topics(value):
     elif "weather" in value:
         split_value = value.split("weather")[1].strip()
         return weather.slack_response(split_value, False)
-    elif ("movies" or "asteroid") in value:
+    elif "movies" in value:
         split_value = value.split("movies")[1].strip()
         return movie_info(split_value)
-    elif "photo" in value:
+    elif "photo" in value or "asteroid" in value:
         return nasa.nasa(value)
     elif "books" in value:
         split_value = value.split("books")[1].strip()

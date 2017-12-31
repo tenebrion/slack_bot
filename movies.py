@@ -1,6 +1,7 @@
-import json
+import get_json_data
 from misc import apis
-from urllib.request import urlopen
+
+api_key = apis.movies()
 
 
 def prep_title(movie_name):
@@ -14,15 +15,12 @@ def prep_title(movie_name):
     :return: title, release date, overview
     """
     partial_url = "https://api.themoviedb.org/3/search/movie?api_key="
-    api_key = apis.movies()
     query = "&query="
     # Replacing white spaces with + symbols
     movie_search_format = movie_name.replace(" ", "+")
     url = partial_url + api_key + query + movie_search_format
     # let's read the contents of the web page, which is returned in json format
-    movie_contents = urlopen(url)
-    movie_read = movie_contents.read()
-    data = json.loads(movie_read)
+    data = get_json_data.grab_json_data(url)
     # we only want to return title, release date, and info about the movie
     for info in data["results"]:
         return info["original_title"], info["release_date"], info["overview"]
