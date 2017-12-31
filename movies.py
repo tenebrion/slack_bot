@@ -18,11 +18,11 @@ def prep_title(movie_name):
     query = "&query="
     # Replacing white spaces with + symbols
     movie_search_format = movie_name.replace(" ", "+")
-    URL = partial_url + api_key + query + movie_search_format
-    # let's read the contents of the webpage, which is returned in json format
-    movie_contents = urlopen(URL)
+    url = partial_url + api_key + query + movie_search_format
+    # let's read the contents of the web page, which is returned in json format
+    movie_contents = urlopen(url)
     movie_read = movie_contents.read()
     data = json.loads(movie_read)
-    # we only want to return title, relase date, and info about the movie
+    # we only want to return title, release date, and info about the movie
     for info in data["results"]:
         return info["original_title"], info["release_date"], info["overview"]

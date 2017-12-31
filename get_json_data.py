@@ -4,16 +4,16 @@ from urllib import request
 from urllib.request import urlopen
 
 
-def json_formatting(url, headers=False, app_id=None, app_key=None):
+def grab_json_data(url, need_headers=None, app_id=None, app_key=None):
     """
 
     :param url:
-    :param headers:
+    :param need_headers:
     :param app_id:
     :param app_key:
     :return:
     """
-    if headers is False:
+    if need_headers is None:
         req = urllib.request.Request(url)
     else:
         req = urllib.request.Request(url, headers={'app_id': app_id, 'app_key': app_key})

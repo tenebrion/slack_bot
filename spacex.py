@@ -13,7 +13,7 @@ def return_next_launch():
     :return: flight_number, launch date, payload info, flight time
     """
     url = "https://api.spacexdata.com/v2/launches/upcoming"
-    a_url = "https://api.spacexdata.com/v2/launches/upcoming?launch_year=2017"
+    # a_url = "https://api.spacexdata.com/v2/launches/upcoming?launch_year=2017"
     req = urllib.request.Request(url)
     with urlopen(req) as response:
         data = response.read()
