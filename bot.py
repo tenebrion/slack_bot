@@ -57,6 +57,40 @@ def topics(value):
     :param value:
     :return: topic
     """
+    """
+    I need to fix up this section so it works. I'm on to something that may eliminate the
+    nasty if / elif / else
+    
+    user_topic = value.partition(" ")[0]
+    topic_data = value.split(user_topic)[1].strip()
+
+    available_topics = {
+        "help": data["help"],
+        "spacex": spacex.return_next_launch,
+        "syn-ant": dictionary.return_syn_ant,
+        "define": dictionary.return_definition,
+        "books": books.book_info,
+        "nasa": nasa.nasa,
+        "movies": movie_info,
+        "weather": weather.slack_response
+    }
+
+    if user_topic in available_topics:
+        if user_topic == "help":
+            if topic_data == "":
+                return "Help Topics: {}".format(", ".join(key for key, value in data["help"].items()))
+        else:
+            try:
+                return available_topics["help"]
+            except KeyError:
+                return "I don't have a help file for that command. Adding {} to the backlog".format(value)
+    else:
+        try:
+            return available_topics[user_topic](topic_data)
+        except KeyError:
+            return f"I'll add {user_topic} to my list of features to add!"
+
+    """
     if "help" in value:
         split_value = value.split("help")[1].strip()
         if split_value == "":
@@ -103,7 +137,7 @@ if __name__ == "__main__":
         print("RLSBot is connected and running!")
         while True:
             command, channel = parse_slack_output(slack_client.rtm_read())
-            #user_command = topics(command)
+            # user_command = topics(command)
             if command and channel:
                 handle_command(command, channel)
             time.sleep(READ_WEBSOCKET_DELAY)

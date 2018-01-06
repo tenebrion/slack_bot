@@ -21,10 +21,12 @@ def return_next_launch():
     second_stages_reused = []
     payload_ids = []
     payload_conts = []
+    customer = []
     launch_sites = []
     for flights in spacex_data:
         flight_nums.append(flights["flight_number"])
-        launch_dates.append(flights["launch_date_utc"])
+        # launch_dates.append(flights["launch_date_utc"])
+        launch_dates.append(flights["launch_date_local"])
 
         for key, value in flights["rocket"].items():
             if key == "rocket_name":
@@ -47,6 +49,8 @@ def return_next_launch():
                                 second_stages_reused.append(value)
                             if key == "payload_type":
                                 payload_conts.append(value)
+                            if key == "customers":
+                                customer.append(value)
 
         for key, value in flights["launch_site"].items():
             if key == "site_name_long":
@@ -54,21 +58,36 @@ def return_next_launch():
 
     # need to loop through the launch dates, update them, and reinsert them
     launches = []
+    """
     for times in launch_dates:
         try:
             ts = time.strptime(times[:19], "%Y-%m-%dT%H:%M:%S")
             launches.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
         except ValueError:
             continue
+    """
+    for times in launch_dates:
+        ts = time.strptime(times[:19], "%Y-%m-%dT%H:%M:%S")
+        launches.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
 
         # I am limiting this to the current upcoming flight. This is because
         # SpaceX doesn't publish a lot of information about flights that aren't 'hard'
         # scheduled. I know everyone wants more than one flight listed, but I don't control it.
         return f"Flight Number: {flight_nums[0]}\n" \
-               f"Launch Date: {launches[0]}\n" \
+               f"Launch Date: {launch_dates[0]}\n" \
                f"Rocket Type: {rocket_names[0]}\n" \
                f"First Stage Rocket Reused: {first_stages_reused[0]}\n" \
                f"Second Stage Rocket Reused: {second_stages_reused[0]}\n" \
                f"Payload: {payload_ids[0]}\n" \
                f"Payload Contents: {payload_conts[0]}\n" \
-               f"Launch Site: {launch_sites[0]}"
+               f"Customer: {customer[0][0]}\n" \
+               f"Launch Site: {launch_sites[0]}\n\n" \
+               f"Flight Number: {flight_nums[1]}\n" \
+               f"Launch Date: {launch_dates[1]}\n" \
+               f"Rocket Type: {rocket_names[1]}\n" \
+               f"First Stage Rocket Reused: {first_stages_reused[1]}\n" \
+               f"Second Stage Rocket Reused: {second_stages_reused[1]}\n" \
+               f"Payload: {payload_ids[1]}\n" \
+               f"Payload Contents: {payload_conts[1]}\n" \
+               f"Customer: {customer[1][0]}\n" \
+               f"Launch Site: {launch_sites[1]}\n\n"
