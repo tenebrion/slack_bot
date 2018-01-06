@@ -8,6 +8,8 @@ def return_next_launch():
     anything more than the next flight. This is because SpaceX doesn't provide it until it locks
     down the info, location, time, etc.
     :return: flight_number, launch date, payload info, flight time
+
+    TODO: Convert this to two separate functions since it kinda does two things
     """
     url = "https://api.spacexdata.com/v2/launches/upcoming"
     # a_url = "https://api.spacexdata.com/v2/launches/upcoming?launch_year=2017"
@@ -58,21 +60,16 @@ def return_next_launch():
 
     # need to loop through the launch dates, update them, and reinsert them
     launches = []
-    """
+
     for times in launch_dates:
         try:
             ts = time.strptime(times[:19], "%Y-%m-%dT%H:%M:%S")
             launches.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
         except ValueError:
             continue
-    """
-    for times in launch_dates:
-        ts = time.strptime(times[:19], "%Y-%m-%dT%H:%M:%S")
-        launches.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
 
-        # I am limiting this to the current upcoming flight. This is because
-        # SpaceX doesn't publish a lot of information about flights that aren't 'hard'
-        # scheduled. I know everyone wants more than one flight listed, but I don't control it.
+        # Not sure if there is a better way to return two sets of launch info.
+        # These will go into a slack room chanel and I don't want it horizontally displayed
         return f"Flight Number: {flight_nums[0]}\n" \
                f"Launch Date: {launch_dates[0]}\n" \
                f"Rocket Type: {rocket_names[0]}\n" \

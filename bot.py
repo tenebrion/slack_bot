@@ -56,74 +56,40 @@ def topics(value):
     I've tried functions, dictionaries, but I can't get them to initiate function calls
     :param value:
     :return: topic
-    """
-    """
+
     I need to fix up this section so it works. I'm on to something that may eliminate the
     nasty if / elif / else
-    
+    """
     user_topic = value.partition(" ")[0]
     topic_data = value.split(user_topic)[1].strip()
 
-    available_topics = {
-        "help": data["help"],
-        "spacex": spacex.return_next_launch,
-        "syn-ant": dictionary.return_syn_ant,
-        "define": dictionary.return_definition,
-        "books": books.book_info,
-        "nasa": nasa.nasa,
-        "movies": movie_info,
-        "weather": weather.slack_response
-    }
-
-    if user_topic in available_topics:
-        if user_topic == "help":
-            if topic_data == "":
-                return "Help Topics: {}".format(", ".join(key for key, value in data["help"].items()))
-        else:
-            try:
-                return available_topics["help"]
-            except KeyError:
-                return "I don't have a help file for that command. Adding {} to the backlog".format(value)
-    else:
-        try:
-            return available_topics[user_topic](topic_data)
-        except KeyError:
-            return f"I'll add {user_topic} to my list of features to add!"
-
-    """
-    if "help" in value:
-        split_value = value.split("help")[1].strip()
-        if split_value == "":
+    if "help" in user_topic:
+        if topic_data == "":
             return "Help Topics: {}".format(", ".join(key for key, value in data["help"].items()))
         else:
             try:
-                return data["help"][split_value]
+                return data["help"][topic_data]
             except KeyError:
-                return "I don't have a help file for that command. Adding {} to the backlog".format(value)
-    elif "weather" in value:
-        split_value = value.split("weather")[1].strip()
-        return weather.slack_response(split_value, False)
-    elif "movies" in value:
-        split_value = value.split("movies")[1].strip()
-        return movie_info(split_value)
-    elif "photo" in value or "asteroid" in value:
-        return nasa.nasa(value)
-    elif "books" in value:
-        split_value = value.split("books")[1].strip()
-        return books.book_info(split_value)
-    elif "define" in value:
-        split_value = value.split("define")[1].strip()
-        return dictionary.return_definition(split_value)
-    elif "syn-ant" in value:
-        split_value = value.split("syn-ant")[1].strip()
-        return dictionary.return_syn_ant(split_value)
-    elif "spacex" in value:
+                return "I don't have a help file for that command. Adding {} to the backlog".format(user_topic)
+    elif "weather" in user_topic:
+        return weather.slack_response(topic_data, False)
+    elif "movies" in user_topic:
+        return movie_info(topic_data)
+    elif "photo" in user_topic or "asteroid" in user_topic:
+        return nasa.nasa(user_topic)
+    elif "books" in user_topic:
+        return books.book_info(topic_data)
+    elif "define" in user_topic:
+        return dictionary.return_definition(topic_data)
+    elif "syn-ant" in user_topic:
+        return dictionary.return_syn_ant(topic_data)
+    elif "spacex" in user_topic:
         return spacex.return_next_launch()
     else:
         try:
-            return data[value]
+            return data[user_topic]
         except KeyError:
-            return "I'll add {} to my list of features to add".format(value)
+            return f"I'll add {topic_data} to my list of user requested features"
 
 
 def movie_info(movie):
