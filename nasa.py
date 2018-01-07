@@ -48,12 +48,15 @@ def nasa(nasa_request):
     :return: asteroids
     """
     if "photo" in nasa_request:
+        # need to determine if the user wants to specify a date for a past photo
         split_value = nasa_request.split("photo")[1].strip()
-        if split_value == "":
+        if split_value == "":  # if the user wants the picture from today
             return daily_photo(nasa_request)
-        else:
+        else:  # if the user wants to specify a date in the past for a picture
             return daily_photo(split_value)
     else:
+        # this section is under construction. Currently, the asteroid data from Nasa
+        # returns 30+ asteroids. This is too much to display in Slack
         match = re.findall(r'\d{4}-\d{2}-\d{2}', nasa_request)
         if len(match) == 0:
             asteroid_start_date = (datetime.now() + timedelta(-30)).strftime("%Y-%m-%d")
