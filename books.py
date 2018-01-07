@@ -24,15 +24,15 @@ def book_info(book):
 
     # XML is super easy to loop through
     for item in items:
-        book_title = item.find("title").text
-        book_synopsis = item.find("description").text
+        book_title = item.find("title").text  # title of user book
+        book_synopsis = item.find("description").text  # Synopsis for user book
         # Not sure if there is a better way to strip excess formatting out from the xml file
-        book_synopsis = book_synopsis.replace("<i>", "")
-        book_synopsis = book_synopsis.replace("</i>", "")
-        book_synopsis = book_synopsis.replace("<br />", " ")
-        book_pub_date = item.find('publication_year').text
-        num_pages = item.find('num_pages').text
-        book_author = item.find('authors/author/name').text
+        book_synopsis = book_synopsis.replace("<i>", "")  # stripping off <i>
+        book_synopsis = book_synopsis.replace("</i>", "")  # stripping off </i>
+        book_synopsis = book_synopsis.replace("<br />", " ")  # stripping off <br />
+        book_pub_date = item.find('publication_year').text  # year of book publication
+        num_pages = item.find('num_pages').text  # number of pages
+        book_author = item.find('authors/author/name').text  # author of the book
 
     return f"Title: {book_title}\n" \
            f"Number of Pages: {num_pages}\n" \
