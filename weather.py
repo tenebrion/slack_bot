@@ -132,7 +132,7 @@ class WeatherConversion:
         return datetime.fromtimestamp(dt).strftime("%Y-%m-%d")
 
 
-def slack_response(user_input, user_want_forecast):
+def slack_response(user_input, user_want_forecast=False):
     """
 
     :param user_input:

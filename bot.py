@@ -63,6 +63,18 @@ def topics(value):
     user_topic = value.partition(" ")[0]
     topic_data = value.split(user_topic)[1].strip()
 
+    # Simple dictionary of topics currently available
+    available_topics = {
+        "spacex": spacex.return_next_launch,
+        "syn-ant": dictionary.return_syn_ant,
+        "define": dictionary.return_definition,
+        "books": books.book_info,
+        "nasa": nasa.nasa,
+        "movies": movies.movie_info,
+        "weather": weather.slack_response
+    }
+
+    # help topics are pulled from a json file. As such, I treat them differently
     if "help" in user_topic:
         if topic_data == "":
             return "Help Topics: {}".format(", ".join(key for key, value in data["help"].items()))
@@ -71,30 +83,15 @@ def topics(value):
                 return data["help"][topic_data]
             except KeyError:
                 return "I don't have a help file for that command. Adding {} to the backlog".format(user_topic)
-    elif "weather" in user_topic:
-        return weather.slack_response(topic_data, False)
-    elif "movies" in user_topic:
-        return movie_info(topic_data)
-    elif "photo" in user_topic or "asteroid" in user_topic:
-        return nasa.nasa(user_topic)
-    elif "books" in user_topic:
-        return books.book_info(topic_data)
-    elif "define" in user_topic:
-        return dictionary.return_definition(topic_data)
-    elif "syn-ant" in user_topic:
-        return dictionary.return_syn_ant(topic_data)
-    elif "spacex" in user_topic:
-        return spacex.return_next_launch()
     else:
+        # I wonder if there is a better way to handle sections that don't need 'topic_data'
+        # e.g. spacex doesn't need anything like 'books the passage'
         try:
-            return data[user_topic]
+            return available_topics[user_topic](topic_data)
+        except TypeError:
+            return available_topics[user_topic]()
         except KeyError:
-            return f"I'll add {topic_data} to my list of user requested features"
-
-
-def movie_info(movie):
-    title, release_date, overview = movies.prep_title(movie)
-    return "{} ({}): {}".format(title, release_date, overview)
+            return f"I'll add {user_topic} to my list of features to add!"
 
 
 if __name__ == "__main__":
@@ -103,7 +100,6 @@ if __name__ == "__main__":
         print("RLSBot is connected and running!")
         while True:
             command, channel = parse_slack_output(slack_client.rtm_read())
-            # user_command = topics(command)
             if command and channel:
                 handle_command(command, channel)
             time.sleep(READ_WEBSOCKET_DELAY)

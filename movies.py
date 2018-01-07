@@ -24,3 +24,8 @@ def prep_title(movie_name):
     # we only want to return title, release date, and info about the movie
     for info in data["results"]:
         return info["original_title"], info["release_date"], info["overview"]
+
+
+def movie_info(movie):
+    title, release_date, overview = prep_title(movie)
+    return "{} ({}): {}".format(title, release_date, overview)

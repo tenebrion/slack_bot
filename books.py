@@ -15,15 +15,21 @@ def book_info(book):
     book_name = book.lower().replace(" ", "+")
     url = goodreads_url + api_key + title_prep + book_name
 
+    # I use the XML parser here, which is why this isn't tied to the get_json_data method
     with urllib.request.urlopen(url) as url_xml:
         root = ET.parse(url_xml).getroot()
 
     # This will provide us the root of the xml file
     items = root.findall("book")
+
     # XML is super easy to loop through
     for item in items:
         book_title = item.find("title").text
         book_synopsis = item.find("description").text
+        # Not sure if there is a better way to strip excess formatting out from the xml file
+        book_synopsis = book_synopsis.replace("<i>", "")
+        book_synopsis = book_synopsis.replace("</i>", "")
+        book_synopsis = book_synopsis.replace("<br />", " ")
         book_pub_date = item.find('publication_year').text
         num_pages = item.find('num_pages').text
         book_author = item.find('authors/author/name').text

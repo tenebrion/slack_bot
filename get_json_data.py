@@ -21,6 +21,7 @@ def grab_json_data(url, need_headers=None, app_id=None, app_key=None):
     with urlopen(req) as response:
         data = response.read()
 
+    # Need to encode our data into a 'json' format
     encode = response.headers.get_content_charset('utf-8')
     json_prep = data.decode(encode)
     json_format = json_prep.replace("\n", "")

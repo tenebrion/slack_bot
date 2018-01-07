@@ -8,8 +8,6 @@ def return_next_launch():
     anything more than the next flight. This is because SpaceX doesn't provide it until it locks
     down the info, location, time, etc.
     :return: flight_number, launch date, payload info, flight time
-
-    TODO: Convert this to two separate functions since it kinda does two things
     """
     url = "https://api.spacexdata.com/v2/launches/upcoming"
     # a_url = "https://api.spacexdata.com/v2/launches/upcoming?launch_year=2017"
