@@ -7,7 +7,7 @@ from datetime import timedelta
 api_key = apis.nasa()
 
 
-def daily_photo(user_date):
+def daily_photo(user_date=None):
     """
     This will return the daily nasa photo. It can also return the photo from any selected date
     :param user_date:
@@ -15,7 +15,7 @@ def daily_photo(user_date):
     """
     planet_url = "https://api.nasa.gov/planetary/apod?"
     planet_date_prep = "date="
-    if user_date == "photo":
+    if user_date is None:
         photo_url = planet_url + api_key
         nasa_json = get_json_data.grab_json_data(photo_url)
         return nasa_json["hdurl"]
@@ -51,7 +51,7 @@ def nasa(nasa_request):
         # need to determine if the user wants to specify a date for a past photo
         split_value = nasa_request.split("photo")[1].strip()
         if split_value == "":  # if the user wants the picture from today
-            return daily_photo(nasa_request)
+            return daily_photo()
         else:  # if the user wants to specify a date in the past for a picture
             return daily_photo(split_value)
     else:

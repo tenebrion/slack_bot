@@ -79,6 +79,21 @@ def return_next_launch():
 
         # Not sure if there is a better way to return two sets of launch info.
         # These will go into a slack room chanel and I don't want it horizontally displayed
+
+        """
+        This is the additional section for SpaceX launch data. Right now, the API I use
+        only has a single upcoming launch data.
+           f"Flight Number: {flight_nums[1]}\n" \
+           f"Launch Date: {launch_dates[1]}\n" \
+           f"Rocket Type: {rocket_names[1]}\n" \
+           f"First Stage Rocket Reused: {first_stages_reused[1]}\n" \
+           f"Second Stage Rocket Reused: {second_stages_reused[1]}\n" \
+           f"Payload: {payload_ids[1]}\n" \
+           f"Payload Contents: {payload_conts[1]}\n" \
+           f"Customer: {customer[1][0]}\n" \
+           f"Launch Site: {launch_sites[1]}"
+        """
+
         return f"Flight Number: {flight_nums[0]}\n" \
                f"Launch Date: {launch_dates[0]}\n" \
                f"Rocket Type: {rocket_names[0]}\n" \
@@ -88,12 +103,3 @@ def return_next_launch():
                f"Payload Contents: {payload_conts[0]}\n" \
                f"Customer: {customer[0][0]}\n" \
                f"Launch Site: {launch_sites[0]}\n\n\n" \
-               f"Flight Number: {flight_nums[1]}\n" \
-               f"Launch Date: {launch_dates[1]}\n" \
-               f"Rocket Type: {rocket_names[1]}\n" \
-               f"First Stage Rocket Reused: {first_stages_reused[1]}\n" \
-               f"Second Stage Rocket Reused: {second_stages_reused[1]}\n" \
-               f"Payload: {payload_ids[1]}\n" \
-               f"Payload Contents: {payload_conts[1]}\n" \
-               f"Customer: {customer[1][0]}\n" \
-               f"Launch Site: {launch_sites[1]}"
