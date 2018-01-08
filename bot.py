@@ -69,8 +69,7 @@ def topics(value):
         "syn-ant": dictionary.return_syn_ant,
         "define": dictionary.return_definition,
         "books": books.book_info,
-        "photo": nasa.nasa,
-        "asteroid": nasa.nasa,
+        "nasa": nasa.nasa,
         "movies": movies.movie_info,
         "weather": weather.slack_response
     }
@@ -84,11 +83,6 @@ def topics(value):
                 return data["help"][topic_data]
             except KeyError:
                 return "I don't have a help file for that command. Adding {} to the backlog".format(user_topic)
-    elif "photo" in user_topic:
-        if topic_data == "":
-            return available_topics[user_topic](user_topic)
-        else:
-            return available_topics[user_topic](user_topic + " " + topic_data)
     else:
         # I wonder if there is a better way to handle sections that don't need 'topic_data'
         # e.g. spacex doesn't need anything like 'books the passage'

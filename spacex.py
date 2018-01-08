@@ -79,27 +79,26 @@ def return_next_launch():
 
         # Not sure if there is a better way to return two sets of launch info.
         # These will go into a slack room chanel and I don't want it horizontally displayed
-
-        """
-        This is the additional section for SpaceX launch data. Right now, the API I use
-        only has a single upcoming launch data.
-           f"Flight Number: {flight_nums[1]}\n" \
-           f"Launch Date: {launch_dates[1]}\n" \
-           f"Rocket Type: {rocket_names[1]}\n" \
-           f"First Stage Rocket Reused: {first_stages_reused[1]}\n" \
-           f"Second Stage Rocket Reused: {second_stages_reused[1]}\n" \
-           f"Payload: {payload_ids[1]}\n" \
-           f"Payload Contents: {payload_conts[1]}\n" \
-           f"Customer: {customer[1][0]}\n" \
-           f"Launch Site: {launch_sites[1]}"
-        """
-
-        return f"Flight Number: {flight_nums[0]}\n" \
-               f"Launch Date: {launch_dates[0]}\n" \
-               f"Rocket Type: {rocket_names[0]}\n" \
-               f"First Stage Rocket Reused: {first_stages_reused[0]}\n" \
-               f"Second Stage Rocket Reused: {second_stages_reused[0]}\n" \
-               f"Payload: {payload_ids[0]}\n" \
-               f"Payload Contents: {payload_conts[0]}\n" \
-               f"Customer: {customer[0][0]}\n" \
-               f"Launch Site: {launch_sites[0]}\n\n\n" \
+        flight_count = -1  # starting with -1. Not sure how to start with 0 when all I need to do is return data
+        if len(flight_nums) > 1:
+            while flight_count < 2:
+                flight_count += 1
+                return f"Flight Number: {flight_nums[flight_count]}\n" \
+                       f"Launch Date: {launch_dates[flight_count]}\n" \
+                       f"Rocket Type: {rocket_names[flight_count]}\n" \
+                       f"First Stage Rocket Reused: {first_stages_reused[flight_count]}\n" \
+                       f"Second Stage Rocket Reused: {second_stages_reused[flight_count]}\n" \
+                       f"Payload: {payload_ids[flight_count]}\n" \
+                       f"Payload Contents: {payload_conts[flight_count]}\n" \
+                       f"Customer: {customer[flight_count][0]}\n" \
+                       f"Launch Site: {launch_sites[flight_count]}\n\n"
+        else:
+            return f"Flight Number: {flight_nums[0]}\n" \
+                   f"Launch Date: {launch_dates[0]}\n" \
+                   f"Rocket Type: {rocket_names[0]}\n" \
+                   f"First Stage Rocket Reused: {first_stages_reused[0]}\n" \
+                   f"Second Stage Rocket Reused: {second_stages_reused[0]}\n" \
+                   f"Payload: {payload_ids[0]}\n" \
+                   f"Payload Contents: {payload_conts[0]}\n" \
+                   f"Customer: {customer[0][0]}\n" \
+                   f"Launch Site: {launch_sites[0]}\n\n"
