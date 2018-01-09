@@ -1,4 +1,3 @@
-import json
 import requests
 
 
@@ -12,10 +11,8 @@ def grab_json_data(url, need_headers=None, app_id=None, app_key=None):
     :return:
     """
     if need_headers is None:
-        r = requests.get(url)
+        r = requests.get(url).json()  # converting the json file to the list type
     else:
-        r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
+        r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key}).json()  # this needs API keys to work
 
-    # Need to encode our data into a 'json' format
-    json_data = json.loads(r.text)
-    return json_data
+    return r
