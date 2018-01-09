@@ -1,7 +1,5 @@
 import json
-import urllib
-from urllib import request
-from urllib.request import urlopen
+import requests
 
 
 def grab_json_data(url, need_headers=None, app_id=None, app_key=None):
@@ -14,16 +12,10 @@ def grab_json_data(url, need_headers=None, app_id=None, app_key=None):
     :return:
     """
     if need_headers is None:
-        req = urllib.request.Request(url)
+        r = requests.get(url)
     else:
-        req = urllib.request.Request(url, headers={'app_id': app_id, 'app_key': app_key})
-
-    with urlopen(req) as response:
-        data = response.read()
+        r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
 
     # Need to encode our data into a 'json' format
-    encode = response.headers.get_content_charset('utf-8')
-    json_prep = data.decode(encode)
-    json_format = json_prep.replace("\n", "")
-    json_data = json.loads(json_format)
+    json_data = json.loads(r.text)
     return json_data
