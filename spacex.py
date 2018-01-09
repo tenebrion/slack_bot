@@ -49,7 +49,7 @@ def return_next_launch():
                 second_stage_data = value
 
                 for values in second_stage_data.values():
-                    for stuff in values:
+                    for stuff in values:  # yes, lots of nested for loops to get all the relevant data
                         for second_key, second_value in stuff.items():
                             if second_key == "payload_id":  # this lets us know what they are sending to space
                                 payload_ids.append(second_value)
