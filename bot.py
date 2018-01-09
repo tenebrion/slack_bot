@@ -84,13 +84,14 @@ def topics(value):
             except KeyError:
                 return "I don't have a help file for that command. Adding {} to the backlog".format(user_topic)
     else:
-        # I wonder if there is a better way to handle sections that don't need 'topic_data'
-        # e.g. spacex doesn't need anything like 'books the passage'
         try:
+            # This should return the user topic + add the topic info the user is requesting
             return available_topics[user_topic](topic_data)
         except TypeError:
+            # this will return the generic data from the user requested topic
             return available_topics[user_topic]()
         except KeyError:
+            # In the event I don't have a method setup for the user request (or they misspell a topic)
             return f"I'll add {user_topic} to my list of features to add!"
 
 
@@ -99,9 +100,9 @@ if __name__ == "__main__":
     if slack_client.rtm_connect():
         print("RLSBot is connected and running!")
         while True:
-            command, channel = parse_slack_output(slack_client.rtm_read())
-            if command and channel:
-                handle_command(command, channel)
+            user_command, user_channel = parse_slack_output(slack_client.rtm_read())
+            if user_command and user_channel:
+                handle_command(user_command, user_channel)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
         print("Connection failed. Invalid Slack token or bot ID?")
