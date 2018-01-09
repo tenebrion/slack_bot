@@ -38,28 +38,29 @@ def return_next_launch():
             if key == "first_stage":
                 first_stage_data = value
 
-                for value in first_stage_data.values():
-                    for things in value:
-                        for key, value in things.items():
-                            if key == "reused":
+                for first_stage_values in first_stage_data.values():
+                    for things in first_stage_values:
+                        for first_key, first_value in things.items():
+                            if first_key == "reused":
                                 # This lets us know if the first stage rocket is being reused
-                                first_stages_reused.append(value)
+                                first_stages_reused.append(first_value)
 
             if key == "second_stage":
                 second_stage_data = value
 
                 for values in second_stage_data.values():
                     for stuff in values:
-                        for key, value in stuff.items():
-                            if key == "payload_id":  # this lets us know what they are sending to space
-                                payload_ids.append(value)
-                            if key == "reused":
+                        for second_key, second_value in stuff.items():
+                            if second_key == "payload_id":  # this lets us know what they are sending to space
+                                payload_ids.append(second_value)
+                            if second_key == "reused":
                                 # This lets us know if the second stage rocket is being reused
-                                second_stages_reused.append(value)
-                            if key == "payload_type":  # this lets us know what the payload is (e.g. satellite, car)
-                                payload_conts.append(value)
-                            if key == "customers":  # This lets us know who is paying SpaceX to launch a rocket
-                                customer.append(value)
+                                second_stages_reused.append(second_value)
+                            if second_key == "payload_type":
+                                # this lets us know what the payload is (e.g. satellite, car)
+                                payload_conts.append(second_value)
+                            if second_key == "customers":  # This lets us know who is paying SpaceX to launch a rocket
+                                customer.append(second_value)
 
         for key, value in flights["launch_site"].items():
             if key == "site_name_long":  # This lets us know what launch pad is being used
@@ -80,9 +81,13 @@ def return_next_launch():
         # Not sure if there is a better way to return two sets of launch info.
         # These will go into a slack room chanel and I don't want it horizontally displayed
         flight_count = -1  # starting with -1. Not sure how to start with 0 when all I need to do is return data
-        if len(flight_nums) > 1:
+
+        # If I don't split this out, when data is returned it crashes the application.
+        # Sometimes the API has multiple launches. Other times it only has one.
+        # Could I create a function to clean it up?
+        if len(flight_nums) > 1:  # this will return info for two launches if they are present in the API
             while flight_count < 2:
-                flight_count += 1
+                flight_count += 1  # I don't know if there is around this...
                 return f"Flight Number: {flight_nums[flight_count]}\n" \
                        f"Launch Date: {launch_dates[flight_count]}\n" \
                        f"Rocket Type: {rocket_names[flight_count]}\n" \
@@ -92,7 +97,7 @@ def return_next_launch():
                        f"Payload Contents: {payload_conts[flight_count]}\n" \
                        f"Customer: {customer[flight_count][0]}\n" \
                        f"Launch Site: {launch_sites[flight_count]}\n\n"
-        else:
+        else:  # This will print if the API only contains one set of launch data
             return f"Flight Number: {flight_nums[0]}\n" \
                    f"Launch Date: {launch_dates[0]}\n" \
                    f"Rocket Type: {rocket_names[0]}\n" \
