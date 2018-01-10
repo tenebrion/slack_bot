@@ -29,25 +29,24 @@ def syn_and_ants(word):
     :param word:
     :return: ant_words, syn_words
     """
-    word = word.lower()
+    user_word = word.lower()
     syn_ant = "/synonyms;antonyms"
-    url = base_url + word + syn_ant
+    url = base_url + user_word + syn_ant
     results = get_json_data.grab_json_data(url, True, app_id, app_key)
-    results = results["results"]
+    synonyms = results["results"][0]["lexicalEntries"][0]["entries"][0]["senses"][0]["synonyms"]
+    antonyms = results["results"][0]["lexicalEntries"][0]["entries"][0]["senses"][0]["antonyms"]
     # we need to toss these into a list since there are multiple entries
     ant_words = []
     syn_words = []
-    for things in results["senses"]:
-        syn_ant_data = things
-        for ants in syn_ant_data["antonyms"]:
-            for key, value in ants.items():
-                if key == "id":
-                    ant_words.append(value)
+    for items in antonyms:
+        for ant_key, ant_value in items.items():
+            if ant_key == "id":
+                ant_words.append(ant_value)
 
-            for syns in syn_ant_data["synonyms"]:
-                for key, value in syns.items():
-                    if key == "id":
-                        syn_words.append(value)
+    for entries in synonyms:
+        for syn_key, syn_value in entries.items():
+            if syn_key == "id":
+                syn_words.append(syn_value)
     return ant_words, syn_words
 
 
