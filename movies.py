@@ -1,7 +1,10 @@
 import get_json_data
 from misc import apis
 
-api_key = apis.movies()
+# Setting up initial URL variables
+API_KEY = apis.movies()
+PARTIAL_URL = "https://api.themoviedb.org/3/search/movie?api_key="
+QUERY = "&query="
 
 
 def prep_title(movie_name):
@@ -14,11 +17,9 @@ def prep_title(movie_name):
     :param movie_name:
     :return: title, release date, overview
     """
-    partial_url = "https://api.themoviedb.org/3/search/movie?api_key="
-    query = "&query="
     # Replacing white spaces with + symbols
     movie_search_format = movie_name.replace(" ", "+")
-    url = partial_url + api_key + query + movie_search_format
+    url = PARTIAL_URL + API_KEY + QUERY + movie_search_format
     # let's read the contents of the web page, which is returned in json format
     data = get_json_data.grab_json_data(url)
     # we only want to return title, release date, and info about the movie
@@ -27,5 +28,10 @@ def prep_title(movie_name):
 
 
 def movie_info(movie):
+    """
+    This is what we call to obtain information about the movie and return the data
+    :param movie:
+    :return:
+    """
     title, release_date, overview = prep_title(movie)
     return "{} ({}): {}".format(title, release_date, overview)
