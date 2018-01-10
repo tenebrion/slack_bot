@@ -4,7 +4,8 @@ from misc import apis
 from datetime import datetime
 from datetime import timedelta
 
-api_key = apis.nasa()
+# Need a API key to get Nasa data
+API_KEY = apis.nasa()
 
 
 def daily_photo(user_date=None):
@@ -16,11 +17,11 @@ def daily_photo(user_date=None):
     planet_url = "https://api.nasa.gov/planetary/apod?"
     planet_date_prep = "date="
     if user_date is None:
-        photo_url = planet_url + api_key
+        photo_url = planet_url + API_KEY
         nasa_json = get_json_data.grab_json_data(photo_url)
         return nasa_json["hdurl"]
     else:
-        photo_url = planet_url + planet_date_prep + user_date + api_key
+        photo_url = planet_url + planet_date_prep + user_date + API_KEY
         nasa_json = get_json_data.grab_json_data(photo_url)
         return nasa_json["hdurl"]
 
@@ -36,7 +37,7 @@ def asteroids(start_date, end_date):
     asteroid_url = "https://api.nasa.gov/neo/rest/v1/feed?"
     asteroid_start_prep = "start_date="
     asteroid_end_prep = "&end_date="
-    asteroid_url = asteroid_url + asteroid_start_prep + start_date + asteroid_end_prep + end_date + api_key
+    asteroid_url = asteroid_url + asteroid_start_prep + start_date + asteroid_end_prep + end_date + API_KEY
     asteroid_json = get_json_data.grab_json_data(asteroid_url)
     return asteroid_json["hdurl"]
 
