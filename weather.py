@@ -19,8 +19,6 @@ from datetime import datetime
 from misc import apis
 import re
 
-# TODO: Refactor this to tie into my Slack bot
-
 
 def remove_spaces(user_data):
     """
