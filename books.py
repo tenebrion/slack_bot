@@ -1,8 +1,9 @@
-import urllib.request
+import requests
 from misc import apis
 from xml.etree import ElementTree as ET
 
 API_KEY = apis.books()  # need to get our API key for GoodReads
+BAD_CHARS = "<i></i><br />"
 
 
 def book_info(book):
@@ -13,11 +14,11 @@ def book_info(book):
     """
     goodreads_url = "https://www.goodreads.com/book/title.xml?key="
     title_prep = "&title="
-    book_name = book.lower().replace(" ", "+")
+    book_name = book.lower().replace(" ", "+")  # no spaces allowed. Spaces in name must be changed to a '+'
     full_url = goodreads_url + API_KEY + title_prep + book_name
     # I use the XML parser here, which is why this isn't tied to the get_json_data method
-    with urllib.request.urlopen(full_url) as url_xml:
-        root = ET.parse(url_xml).getroot()
+    response = requests.get(full_url)
+    root = ET.fromstring(response.content)
 
     # This will provide us the root of the xml file
     items = root.findall("book")
