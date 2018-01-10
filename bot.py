@@ -77,12 +77,12 @@ def topics(value):
     # help topics are pulled from a json file. As such, I treat them differently
     if "help" in user_topic:
         if topic_data == "":
-            return "Help Topics: {}".format(", ".join(key for key, value in data["help"].items()))
+            return f"Help Topics: {', '.join(key for key, value in data['help'].items())}"
         else:
             try:
                 return data["help"][topic_data]
             except KeyError:
-                return "I don't have a help file for that command. Adding {} to the backlog".format(user_topic)
+                return f"I don't have a help file for that command. Adding {user_topic} to the backlog"
     else:
         try:
             # This should return the user topic + add the topic info the user is requesting
