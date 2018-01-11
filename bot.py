@@ -4,6 +4,7 @@ import weather
 import movies
 import nasa
 import xkcd
+import bitcoin_prices
 import stock_prices
 import dictionary
 import books
@@ -75,7 +76,8 @@ def topics(value):
         "movies": movies.movie_info,
         "weather": weather.slack_response,
         "xkcd": xkcd.return_xkcd_img,
-        "stocks": stock_prices.return_stock_prices
+        "stocks": stock_prices.return_stock_prices,
+        "bitcoin": bitcoin_prices.return_bitcoin_data
     }
 
     # help topics are pulled from a json file. As such, I treat them differently
