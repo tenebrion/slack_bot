@@ -77,7 +77,7 @@ def topics(value):
         "weather": weather.slack_response,
         "xkcd": xkcd.return_xkcd_img,
         "stocks": stock_prices.return_stock_prices,
-        "bitcoin": bitcoin_prices.return_bitcoin_data
+        "bitcoin": bitcoin_prices.gather_bitcoin_values
     }
 
     # help topics are pulled from a json file. As such, I treat them differently
