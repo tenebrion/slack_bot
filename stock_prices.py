@@ -14,7 +14,7 @@ def return_stock_prices(quote):
     market_high_value = r["high"]
     market_low_value = r["low"]
     market_open_price = r["open"]
-    market_latest_price = r["latestPrice"]
+    market_latest_price = r["iexRealtimePrice"]
 
     return f"Stock data for : {company_name} ({market_symbol})\n" \
            f"Opening Price: {market_open_price}\n" \
