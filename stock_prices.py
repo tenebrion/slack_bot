@@ -1,3 +1,4 @@
+import json
 import get_json_data
 
 PARTIAL_URL = "https://api.iextrading.com/1.0/stock/"
@@ -6,7 +7,10 @@ END_URL = "/quote"
 
 def return_stock_prices(quote):
     full_url = PARTIAL_URL + quote + END_URL
-    r = get_json_data.grab_json_data(full_url)
+    try:
+        r = get_json_data.grab_json_data(full_url)
+    except json.decoder.JSONDecodeError:
+        return "Please provide a valid stock sybol"
 
     market_symbol = r["symbol"]
     company_name = r["companyName"]
