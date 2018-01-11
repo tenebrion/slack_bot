@@ -14,9 +14,8 @@ def return_xkcd_img(comic=None):
     if comic is None:
         full_url = PARTIAL_URL + END_URL  # building url
         img = get_json_data.grab_json_data(full_url)
-        return img["img"]  # only want to return image of the comic
     else:
         comic_number = comic + "/"  # creating the comic number url
         full_comic_url = PARTIAL_URL + comic_number + END_URL
         img = get_json_data.grab_json_data(full_comic_url)
-        return img["img"]
+    return img["img"]  # only want to return image of the comic
