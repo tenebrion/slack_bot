@@ -4,8 +4,13 @@ URL = "https://api.coinmarketcap.com/v1/ticker/?limit=5"
 
 
 def gather_bitcoin_values():
+    """
+    This is gathering data from the free market API
+    :return:
+    """
     r = get_json_data.grab_json_data(URL)
 
+    # Setting up variable lists
     name = []
     rank = []
     price = []
@@ -15,7 +20,7 @@ def gather_bitcoin_values():
 
     count = 0
 
-    while count <= 4:
+    while count <= 4:  # looping through values to collect
         name.append(r[count]["name"])
         rank.append(r[count]["rank"])
         price.append(r[count]["price_usd"])
@@ -28,9 +33,13 @@ def gather_bitcoin_values():
 
 
 def return_bitcoin_data():
+    """
+    This will return all our bitcoin data points for the top 5 valued platforms
+    :return:
+    """
     name, rank, price, percent_change_1h, percent_change_24h, percent_change_7d = gather_bitcoin_values()
 
-    count = -1
+    count = -1  # need to start with 0 and can't do work below a return statement
     while count < 5:
         count += 1
         return f"Name: {name[count]}\n" \
