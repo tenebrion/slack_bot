@@ -24,7 +24,7 @@ AT_BOT = "<@" + BOT_ID + ">"
 slack_client = SlackClient(apis.rls())
 
 # load our json file that contains basic commands
-data = json.load(open(r"C:\Users\michael.f.koegel\PycharmProjects\slack_bot\slack_messages.json"))
+data = json.load(open(r"C:\Users\michael.f.koegel\Documents\GitHub\slack_bot\slack_messages.json"))
 
 
 def handle_command(command, channel):
