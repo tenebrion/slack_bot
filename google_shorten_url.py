@@ -16,4 +16,8 @@ def return_shorter_url(url):
     payload = {"longUrl": url}  # defining the payload info
     headers = {"content-type": "application/json"}  # defining headers
     r = requests.post(FULL_URL, data=json.dumps(payload), headers=headers).json()  # making a post to google API
-    return f"Short URL: {r['id']}"
+    #return f"Short URL: {r['id']}"
+    return f"{url}\n" \
+           f"{payload}\n" \
+           f"{headers}\n" \
+           f"{r}\n"

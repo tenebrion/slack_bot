@@ -93,9 +93,6 @@ def topics(value):
                 return data["help"][topic_data]
             except KeyError:
                 return f"I don't have a help file for that command. Adding {user_topic} to the backlog"
-    elif "lat-long" in user_topic:
-        split_data = topic_data.split()
-        return available_topics[user_topic](split_data[0], split_data[1])
     else:
         try:
             # This should return the user topic + add the topic info the user is requesting

@@ -13,7 +13,7 @@
     "lat-long": "usage: lat-long auckland nz. This will return the latitude and longitude of a city / state (country)",
     "shorten": "usage: shorten https://www.theverge.com. This will take a long URL and shorten it",
     "xkcd": "usage: xkcd (or xkcd 600). If left as xkcd, it will return the current day's comic. Otherwise, it will return the comic number listed.",
-    "stocks": "usage: stocks. This will return the Nasdaq value and trend info."
+    "stocks": "usage: stocks aapl. This will return the stock value and trend info for the symbol listed."
   },
   "purge room": "hides room history in slack channel",
   "clear joins": "remove all user has joined channel messages"
