@@ -48,10 +48,15 @@ def return_flights_overhead(city_state):
                 country.append(value)
             else:
                 return "nothing to see here"
-    return f"Airline: {airline_name}\n" \
-           f"Call Sign: {call_sign}\n" \
-           f"Plane ID: {flight_id}\n" \
-           f"Plane Model: {model}\n" \
-           f"Origin: {flight_orig}\n" \
-           f"Destination: {flight_dest}\n" \
-           f"Country of Origin: {country}"
+    entries = len(flight_id)
+    count = -1
+
+    while count < entries:
+        count += 1
+        return f"Airline: {airline_name[count]}\n" \
+               f"Call Sign: {call_sign[count]}\n" \
+               f"Plane ID: {flight_id[count]}\n" \
+               f"Plane Model: {model[count]}\n" \
+               f"Origin: {flight_orig[count]}\n" \
+               f"Destination: {flight_dest[count]}\n" \
+               f"Country of Origin: {country[count]}\n\n"
