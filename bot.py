@@ -9,6 +9,8 @@ import stock_prices
 import dictionary
 import books
 import spacex
+import google_lat_long
+import google_shorten_url
 from misc import apis
 from slackclient import SlackClient
 
@@ -77,7 +79,9 @@ def topics(value):
         "weather": weather.slack_response,
         "xkcd": xkcd.return_xkcd_img,
         "stocks": stock_prices.return_stock_prices,
-        "bitcoin": bitcoin_prices.gather_bitcoin_values
+        "bitcoin": bitcoin_prices.gather_bitcoin_values,
+        "lat-long": google_lat_long.return_lat_long,
+        "shorten": google_shorten_url.return_shorter_url
     }
 
     # help topics are pulled from a json file. As such, I treat them differently
@@ -89,6 +93,9 @@ def topics(value):
                 return data["help"][topic_data]
             except KeyError:
                 return f"I don't have a help file for that command. Adding {user_topic} to the backlog"
+    elif "lat-long" in user_topic:
+        split_data = topic_data.split()
+        return available_topics[user_topic](split_data[0], split_data[1])
     else:
         try:
             # This should return the user topic + add the topic info the user is requesting
