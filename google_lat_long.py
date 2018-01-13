@@ -28,4 +28,4 @@ def return_lat_long(city_state, use_data=None):
         return f"Latitude: {latitude}\n" \
                f"Longitude: {longitude}"
     else:  # if this data will be used in another method call, this data will be the result
-        return latitude, longitude
+        return str(latitude), str(longitude)
