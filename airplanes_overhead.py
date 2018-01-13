@@ -4,7 +4,7 @@ import google_lat_long
 # Setting up URL variables
 PARTIAL_URL = "https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat="
 LNG_URL = "&lng="
-END_URL = "&fDstL=0&fDstU=48.28"
+END_URL = "&fDstL=0&fDstU=8.04672"
 
 
 def return_flights_overhead(city_state):
