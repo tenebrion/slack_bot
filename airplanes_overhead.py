@@ -48,6 +48,8 @@ def return_flights_overhead(city_state):
                 call_sign.append(value)
             if key == "Cou":
                 country.append(value)
+
+    # I can't get this section working. It either prints a single plane entry or crashes (memory constraints)
     """    
     entries = len(call_sign)
     count = 0
