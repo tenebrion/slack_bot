@@ -10,6 +10,7 @@ import dictionary
 import books
 import spacex
 import google_lat_long
+import number_facts
 import google_shorten_url
 import airplanes_overhead
 import chuck_norris_jokes
@@ -85,7 +86,8 @@ def topics(value):
         "lat-long": google_lat_long.return_lat_long,
         "shorten": google_shorten_url.return_shorter_url,
         "airplanes": airplanes_overhead.return_flights_overhead,
-        "chuck-norris": chuck_norris_jokes.return_chuck_norris_joke
+        "chuck-norris": chuck_norris_jokes.return_chuck_norris_joke,
+        "numbers": number_facts.return_number_facts
     }
 
     # help topics are pulled from a json file. As such, I treat them differently
