@@ -95,8 +95,6 @@ def topics(value):
                 return data["help"][topic_data]
             except KeyError:
                 return f"I don't have a help file for that command. Adding {user_topic} to the backlog"
-    elif "airplanes" in user_topic:
-        return available_topics[user_topic](topic_data)
     else:
         try:
             # This should return the user topic + add the topic info the user is requesting
