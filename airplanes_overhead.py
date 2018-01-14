@@ -1,6 +1,7 @@
 import get_json_data
 import google_lat_long
 
+# http://www.virtualradarserver.co.uk/Documentation/Formats/AircraftList.aspx
 # Setting up URL variables
 PARTIAL_URL = "https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat="
 LNG_URL = "&lng="
