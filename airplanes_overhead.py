@@ -4,7 +4,7 @@ import google_lat_long
 # Setting up URL variables
 PARTIAL_URL = "https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat="
 LNG_URL = "&lng="
-END_URL = "&fDstL=0&fDstU=8.04672"
+END_URL = "&fDstL=0&fDstU=100"
 
 
 def return_flights_overhead(city_state):
@@ -27,6 +27,7 @@ def return_flights_overhead(city_state):
 
     # need to call the google method to convert user provide city & state (or country) to Lat & Lng
     latitude, longitude = google_lat_long.return_lat_long(city_state, True)
+    print(f"{latitude}: {longitude}")
     full_url = PARTIAL_URL + latitude + LNG_URL + longitude + END_URL  # making our full url
     data = get_json_data.grab_json_data(full_url)  # grabbing the json data
     flights = data["acList"]  # this can be a large file and eat memory
@@ -34,21 +35,19 @@ def return_flights_overhead(city_state):
         for key, value in items.items():
             if key == "From":
                 flight_orig.append(value)
-            elif key == "To":
+            if key == "To":
                 flight_dest.append(value)
-            elif key == "Id":
+            if key == "Id":
                 flight_id.append(value)
-            elif key == "Mdl":
+            if key == "Mdl":
                 model.append(value)
-            elif key == "Op":
+            if key == "Op":
                 airline_name.append(value)
-            elif key == "Call":
+            if key == "Call":
                 call_sign.append(value)
-            elif key == "Cou":
+            if key == "Cou":
                 country.append(value)
-            else:
-                return "nothing to see here"
-    entries = len(flight_id)
+    entries = len(call_sign)
     count = -1
 
     while count < entries:
