@@ -12,6 +12,7 @@ import spacex
 import google_lat_long
 import google_shorten_url
 import airplanes_overhead
+import chuck_norris_jokes
 from misc import apis
 from slackclient import SlackClient
 
@@ -83,7 +84,8 @@ def topics(value):
         "bitcoin": bitcoin_prices.gather_bitcoin_values,
         "lat-long": google_lat_long.return_lat_long,
         "shorten": google_shorten_url.return_shorter_url,
-        "airplanes": airplanes_overhead.return_flights_overhead
+        "airplanes": airplanes_overhead.return_flights_overhead,
+        "chuck-norris": chuck_norris_jokes.return_chuck_norris_joke
     }
 
     # help topics are pulled from a json file. As such, I treat them differently
