@@ -1,6 +1,8 @@
 import get_json_data
+import collections
 
-URL = "https://api.coinmarketcap.com/v1/ticker/?limit=5"
+# The quantity is changeable based on the limit at the end. I only want top 10
+URL = "https://api.coinmarketcap.com/v1/ticker/?limit=10"
 
 
 def gather_bitcoin_values():
@@ -10,31 +12,23 @@ def gather_bitcoin_values():
     """
     r = get_json_data.grab_json_data(URL)
 
-    # Setting up variable lists
-    name = []
-    rank = []
-    price = []
-    percent_change_1h = []
-    percent_change_24h = []
-    percent_change_7d = []
+    # Setting up variable list
+    cryptocurrency_data = []
 
     count = 0
-    return_count = -1
 
-    while count <= 4:  # looping through values to collect
-        name.append(r[count]["name"])
-        rank.append(r[count]["rank"])
-        price.append(r[count]["price_usd"])
-        percent_change_1h.append(r[count]["percent_change_1h"])
-        percent_change_24h.append(r[count]["percent_change_24h"])
-        percent_change_7d.append(r[count]["percent_change_7d"])
+    # Building namedtuple to quick build the lists of data
+    Cryptocurrency = collections.namedtuple("Cryptocurrency", "Name Rank Price Price_1h Price_24h Price_7d")
+    while count <= 9:  # this can change based on how many we pull from the URL above
+        cryptocurrency_data.append(Cryptocurrency(r[count]["name"],
+                                                  r[count]["rank"],
+                                                  r[count]["price_usd"],
+                                                  r[count]["percent_change_1h"],
+                                                  r[count]["percent_change_24h"],
+                                                  r[count]["percent_change_7d"]
+                                                  )
+                                   )
         count += 1
 
-    while return_count < 4:
-        return_count += 1
-        return f"Name: {name[return_count]}\n" \
-               f"Coin Rank: {rank[return_count]}\n" \
-               f"Current Price: {price[return_count]}\n" \
-               f"1 Hour Change: {percent_change_1h[return_count]}\n" \
-               f"24 Hour Change: {percent_change_24h[return_count]}\n" \
-               f"7 Day Change: {percent_change_7d[return_count]}\n\n"
+    # I don't know how to print each item on a line of its own
+    return f"{cryptocurrency_data}"
