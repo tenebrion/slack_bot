@@ -50,22 +50,6 @@ def return_flights_overhead(city_state):
             if key == "Cou":
                 country.append(value)
 
-    # I can't get this section working. It either prints a single plane entry or crashes (memory constraints)
-    """    
-    entries = len(call_sign)
-    count = 0
-
-    while count < entries:
-        count += 1
-        return f"Airline: {airline_name[count]}\n" \
-               f"Call Sign: {call_sign[count]}\n" \
-               f"Plane ID: {flight_id[count]}\n" \
-               f"Plane Model: {model[count]}\n" \
-               f"Origin: {flight_orig[count]}\n" \
-               f"Destination: {flight_dest[count]}\n" \
-               f"Country of Origin: {country[count]}\n\n"
-    """
-
     # running this because I can't get the return to iterate through with the returns
     Flights = collections.namedtuple('Flights', "Airline Model Flight_ID Call_Sign Origination Destination Country")
 
