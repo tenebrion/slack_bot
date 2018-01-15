@@ -16,7 +16,8 @@
     "stocks": "usage: stocks aapl. This will return the stock value and trend info for the symbol listed.",
     "chuck-norris": "usage: chuck-norris. This will return random funny jokes with Chuck Norris.",
     "numbers": "usage: numbers. This will return random number facts.",
-    "joke": "usage: joke. This will return a random joke."
+    "joke": "usage: joke. This will return a random joke.",
+    "trivia": "usage: trivia. This will return trivia questions that are on Jeopardy."
   },
   "purge room": "hides room history in slack channel",
   "clear joins": "remove all user has joined channel messages"
