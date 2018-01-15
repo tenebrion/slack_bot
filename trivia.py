@@ -11,5 +11,7 @@ def return_trivia():
     """
     # grabbing trivia data (json format)
     data = get_json_data.grab_json_data(URL)
-    return f"Question: {data['question']}\n" \
-           f"Answer: {data['answer']}"
+    # need to strip out the formatting characters
+    answer = data[0]['answer'].replace("<i>", "").replace("</i>", "")
+    return f"Question: {data[0]['question']}\n" \
+           f"Answer: {answer}"
