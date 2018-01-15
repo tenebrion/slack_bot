@@ -9,8 +9,8 @@ def return_joke():
     Simple method to pull a random joke
     :return:
     """
-    data = get_json_data.grab_json_data(URL)
-    setup = data["setup"].replace("\\", "")
-    punchline = data["punchline"].replace("\\", "")
+    data = get_json_data.grab_json_data(URL)  # pulling data (json format)
+    setup = data["setup"].replace("\\", "")  # stripping out the \ in the data
+    punchline = data["punchline"].replace("\\", "")  # stripping out the \ in the data
     return f"{setup}\n" \
            f"{punchline}"
