@@ -26,6 +26,7 @@ def return_flights_overhead(city_state):
     airline_name = []
     call_sign = []
     country = []
+    full_flight_data = []
 
     # need to call the google method to convert user provide city & state (or country) to Lat & Lng
     latitude, longitude = google_lat_long.return_lat_long(city_state, True)
@@ -68,9 +69,18 @@ def return_flights_overhead(city_state):
     # running this because I can't get the return to iterate through with the returns
     Flights = collections.namedtuple('Flights', "Airline Model Flight_ID Call_Sign Origination Destination Country")
 
-    # calling the named tuple to build a list of lists
-    flights = [
-        Flights(airline_name, model, flight_id, call_sign, flight_orig, flight_dest, country)
-    ]
+    flight_count = 0  # for the while loop to use
+    while flight_count < len(call_sign):
+        # calling the named tuple to build a list of lists
+        full_flight_data.append(Flights(airline_name[flight_count],
+                                        model[flight_count],
+                                        flight_id[flight_count],
+                                        call_sign[flight_count],
+                                        flight_orig[flight_count],
+                                        flight_dest[flight_count],
+                                        country[flight_count]
+                                        )
+                                )
+        flight_count += 1  # need to increase the count each time it loops through
 
-    return f"{flights}"  # quick and dirty return of all planes
+    return f"{full_flight_data}"
