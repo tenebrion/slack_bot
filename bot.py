@@ -9,6 +9,7 @@ import stock_prices
 import dictionary
 import books
 import spacex
+import trivia
 import google_lat_long
 import random_joke
 import number_facts
@@ -89,7 +90,8 @@ def topics(value):
         "airplanes": airplanes_overhead.return_flights_overhead,
         "chuck-norris": chuck_norris_jokes.return_chuck_norris_joke,
         "numbers": number_facts.return_number_facts,
-        "joke": random_joke.return_joke
+        "joke": random_joke.return_joke,
+        "trivia": trivia.return_trivia
     }
 
     # help topics are pulled from a json file. As such, I treat them differently
