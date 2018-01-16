@@ -1,4 +1,5 @@
 import json
+import collections
 import get_json_data
 
 PARTIAL_URL = "https://api.iextrading.com/1.0/stock/"
@@ -10,19 +11,29 @@ def return_stock_prices(quote):
     try:
         r = get_json_data.grab_json_data(full_url)
     except json.decoder.JSONDecodeError:
-        return "Please provide a valid stock sybol"
+        return "Please provide a valid stock symbol"
 
-    market_symbol = r["symbol"]
-    company_name = r["companyName"]
-    market_close_value = r["close"]
-    market_high_value = r["high"]
-    market_low_value = r["low"]
-    market_open_price = r["open"]
-    market_latest_price = r["iexRealtimePrice"]
+    # Setting this data up in a namedtuple for readability
+    Stock_data = collections.namedtuple("Stocks",
+                                        "Company "
+                                        "Symbol "
+                                        "Market_Open_Price "
+                                        "Market_Low_Value  "
+                                        "Market_High_Value "
+                                        "Market_Close_Value "
+                                        "Market_Latest_Price")
 
-    return f"Stock data for : {company_name} ({market_symbol})\n" \
-           f"Opening Price: {market_open_price}\n" \
-           f"Market Low Price: {market_low_value}\n" \
-           f"Market High Price: {market_high_value}\n" \
-           f"Closing Price: {market_close_value}\n" \
-           f"Latest Price (After hours trading): {market_latest_price}"
+    company_data = Stock_data(r["companyName"],
+                              r["symbol"],
+                              r["open"],
+                              r["low"],
+                              r["high"],
+                              r["close"],
+                              r["iexRealtimePrice"])
+
+    return f"Stock data for : {company_data[0]} ({company_data[1]})\n" \
+           f"Opening Price: {company_data[2]}\n" \
+           f"Market Low Price: {company_data[3]}\n" \
+           f"Market High Price: {company_data[4]}\n" \
+           f"Closing Price: {company_data[5]}\n" \
+           f"Latest Price (After hours trading): {company_data[6]}"
