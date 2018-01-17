@@ -1,4 +1,5 @@
 import time
+import collections
 import get_json_data
 
 
@@ -15,57 +16,83 @@ def return_next_launch():
 
     # setting up our list variables. This is because SpaceX knows about the next ~3 launches,
     # but only provides full details of the next launch.
-    flight_nums = []
+    flight_numbers = []
     launch_dates = []
     rocket_names = []
     first_stages_reused = []
     second_stages_reused = []
     payload_ids = []
-    payload_conts = []
+    payload_contents = []
+    payload_weight = []
     customer = []
     launch_sites = []
-    launches = []
+    launch_times = []
+    spacex = []
 
-    # looping through the json file to grab necessary fields
-    for flights in spacex_data:
-        flight_nums.append(flights["flight_number"])
-        launch_dates.append(flights["launch_date_local"])
+    count = 0
 
-        for key, value in flights["rocket"].items():
-            if key == "rocket_name":
-                rocket_names.append(value)  # e.g. Falcon Heavy
+    """
+    # There has to be a better way. I thought about namedtuples...
+    while count < len(spacex_data):
+        flight_numbers.append(spacex_data[count]["flight_number"])
+        launch_dates.append(spacex_data[count]["launch_date_local"])
+        rocket_names.append(spacex_data[count]["rocket"]["rocket_name"])
+        first_stages_reused.append(spacex_data[count]["rocket"]["first_stage"]["cores"][0]["reused"])
+        second_stages_reused.append(spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["reused"])
+        payload_ids.append(spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_id"])
+        payload_contents.append(spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_type"])
+        # Need to figure out how to handle entries that are blank
+        if spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_mass_kg"] is None:
+            payload_weight.append("No weight provided")
+        else:
+            payload_weight.append(spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_mass_kg"])
+        customer.append(spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["customers"])
+        launch_sites.append(spacex_data[count]["launch_site"]["site_name_long"])
+        count += 1
+    """
 
-            if key == "first_stage":
-                first_stage_data = value
+    date_count = 0
+    while date_count < len(spacex_data):
+        launch_dates.append(spacex_data[date_count]["launch_date_local"])
+        date_count += 1
 
-                for first_stage_values in first_stage_data.values():
-                    for things in first_stage_values:
-                        for first_key, first_value in things.items():
-                            if first_key == "reused":
-                                # This lets us know if the first stage rocket is being reused
-                                first_stages_reused.append(first_value)
+    for times in launch_dates:
+        try:
+            ts = time.strptime(times[:19], "%Y-%m-%dT%H:%M:%S")
+            launch_times.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
+        except ValueError:
+            continue
 
-            if key == "second_stage":
-                second_stage_data = value
+    Spacex = collections.namedtuple("SpaceX",
+                                    "Flight_Number "
+                                    "Launch_Date "
+                                    "Rocket_Name "
+                                    "First_Stage_Reused "
+                                    "Second_Stage_Reused "
+                                    "Payload_ID "
+                                    "Payload_Type "
+                                    "Payload_Weight "
+                                    "Customer "
+                                    "Launch_Site"
+                                    )
 
-                for values in second_stage_data.values():
-                    for stuff in values:  # yes, lots of nested for loops to get all the relevant data
-                        for second_key, second_value in stuff.items():
-                            if second_key == "payload_id":  # this lets us know what they are sending to space
-                                payload_ids.append(second_value)
-                            if second_key == "reused":
-                                # This lets us know if the second stage rocket is being reused
-                                second_stages_reused.append(second_value)
-                            if second_key == "payload_type":
-                                # this lets us know what the payload is (e.g. satellite, car)
-                                payload_conts.append(second_value)
-                            if second_key == "customers":  # This lets us know who is paying SpaceX to launch a rocket
-                                customer.append(second_value)
-
-        for key, value in flights["launch_site"].items():
-            if key == "site_name_long":  # This lets us know what launch pad is being used
-                launch_sites.append(value)
-
+    # I'm not sure if this is the best way. I can't alter these tuple values (that I know of).
+    # I also don't know how to return multiple entries which is why I went this way.
+    while count < len(spacex_data):
+        spacex.append(Spacex(spacex_data[count]["flight_number"],
+                             launch_times[count],
+                             spacex_data[count]["rocket"]["rocket_name"],
+                             spacex_data[count]["rocket"]["first_stage"]["cores"][0]["reused"],
+                             spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["reused"],
+                             spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_id"],
+                             spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_type"],
+                             spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["payload_mass_kg"],
+                             spacex_data[count]["rocket"]["second_stage"]["payloads"][0]["customers"],
+                             spacex_data[count]["launch_site"]["site_name_long"]
+                             )
+                      )
+        count += 1
+    """
     # time / date info come in ISO 8601 format - 2018-01-07T20:00:00-05:00
 
     # Currently I am not using this. When I run the program here, I only get a single date & time
@@ -74,7 +101,7 @@ def return_next_launch():
     for times in launch_dates:
         try:
             ts = time.strptime(times[:19], "%Y-%m-%dT%H:%M:%S")
-            launches.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
+            launch_times.append(time.strftime("%Y-%m-%d @ %H:%M:%S", ts))
         except ValueError:
             continue
 
@@ -85,25 +112,31 @@ def return_next_launch():
         # If I don't split this out, when data is returned it crashes the application.
         # Sometimes the API has multiple launches. Other times it only has one.
         # Could I create a function to clean it up?
-        if len(flight_nums) > 1:  # this will return info for two launches if they are present in the API
+        if len(flight_numbers) > 1:  # this will return info for two launches if they are present in the API
             while flight_count < 2:
                 flight_count += 1  # I don't know if there is around this...
-                return f"Flight Number: {flight_nums[flight_count]}\n" \
+                return f"Flight Number: {flight_numbers[flight_count]}\n" \
                        f"Launch Date: {launch_dates[flight_count]}\n" \
                        f"Rocket Type: {rocket_names[flight_count]}\n" \
                        f"First Stage Rocket Reused: {first_stages_reused[flight_count]}\n" \
                        f"Second Stage Rocket Reused: {second_stages_reused[flight_count]}\n" \
                        f"Payload: {payload_ids[flight_count]}\n" \
-                       f"Payload Contents: {payload_conts[flight_count]}\n" \
+                       f"Payload Contents: {payload_contents[flight_count]}\n" \
+                       f"Payload Weight: {payload_weight[flight_count]}\n" \
                        f"Customer: {customer[flight_count][0]}\n" \
                        f"Launch Site: {launch_sites[flight_count]}\n\n"
         else:  # This will print if the API only contains one set of launch data
-            return f"Flight Number: {flight_nums[0]}\n" \
+            return f"Flight Number: {flight_numbers[0]}\n" \
                    f"Launch Date: {launch_dates[0]}\n" \
                    f"Rocket Type: {rocket_names[0]}\n" \
                    f"First Stage Rocket Reused: {first_stages_reused[0]}\n" \
                    f"Second Stage Rocket Reused: {second_stages_reused[0]}\n" \
                    f"Payload: {payload_ids[0]}\n" \
-                   f"Payload Contents: {payload_conts[0]}\n" \
+                   f"Payload Contents: {payload_contents[0]}\n" \
+                   f"Payload Weight: {payload_weight[flight_count]}\n" \
                    f"Customer: {customer[0][0]}\n" \
                    f"Launch Site: {launch_sites[0]}\n\n"
+    """
+    return f"{spacex[0]}\n" \
+           f"{spacex[1]}\n" \
+           f"{spacex[2]}\n"
