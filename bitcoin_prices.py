@@ -30,5 +30,15 @@ def gather_bitcoin_values():
                                    )
         count += 1
 
-    # I don't know how to print each item on a line of its own
-    return f"{cryptocurrency_data}"
+    # yeah yeah. I know I've got a ton of repeated data. I don't know how to get
+    # the return method to loop through and return each piece of data.
+    return f"{cryptocurrency_data[0]}\n" \
+           f"{cryptocurrency_data[1]}\n" \
+           f"{cryptocurrency_data[2]}\n" \
+           f"{cryptocurrency_data[3]}\n" \
+           f"{cryptocurrency_data[4]}\n" \
+           f"{cryptocurrency_data[5]}\n" \
+           f"{cryptocurrency_data[6]}\n" \
+           f"{cryptocurrency_data[7]}\n" \
+           f"{cryptocurrency_data[8]}\n" \
+           f"{cryptocurrency_data[9]}"
