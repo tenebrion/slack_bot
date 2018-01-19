@@ -31,6 +31,7 @@ def return_next_launch():
 
     count = 0
 
+    # This works. Just not sure of the best way to use this. Namedtuples or several lists
     """
     # There has to be a better way. I thought about namedtuples...
     while count < len(spacex_data):
