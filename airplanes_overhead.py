@@ -19,8 +19,8 @@ def return_flights_overhead(city_state):
     :return:
     """
     # Variable list to return lots of flights
-    flight_orig = []
-    flight_dest = []
+    flight_origination = []
+    flight_destination = []
     flight_id = []
     model = []
     airline_name = []
@@ -33,12 +33,13 @@ def return_flights_overhead(city_state):
     full_url = PARTIAL_URL + latitude + LNG_URL + longitude + END_URL  # making our full url
     data = get_json_data.grab_json_data(full_url)  # grabbing the json data
     flight_data = data["acList"]  # this can be a large file and eat memory
-    for items in flight_data:
+
+    for items in flight_data:  # looping though all keys / values in the list
         for key, value in items.items():
             if key == "From":
-                flight_orig.append(value)
+                flight_origination.append(value)
             if key == "To":
-                flight_dest.append(value)
+                flight_destination.append(value)
             if key == "Id":
                 flight_id.append(value)
             if key == "Mdl":
@@ -60,8 +61,8 @@ def return_flights_overhead(city_state):
                                         model[flight_count],
                                         flight_id[flight_count],
                                         call_sign[flight_count],
-                                        flight_orig[flight_count],
-                                        flight_dest[flight_count],
+                                        flight_origination[flight_count],
+                                        flight_destination[flight_count],
                                         country[flight_count]
                                         )
                                 )
