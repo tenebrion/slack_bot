@@ -3,6 +3,7 @@ import get_json_data
 # URL for trivia API
 URL = "http://jservice.io/api/random"
 
+
 def return_trivia():
     """
     This connects to an API to pull a random trivia question.
