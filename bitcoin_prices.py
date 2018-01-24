@@ -32,6 +32,9 @@ def gather_bitcoin_values():
 
     # yeah yeah. I know I've got a ton of repeated data. I don't know how to get
     # the return method to loop through and return each piece of data.
+    # I've tried the count = 0
+    # while count < len(cryptocurrency_data: return stuff
+    # no luck with it
     return f"{cryptocurrency_data[0]}\n" \
            f"{cryptocurrency_data[1]}\n" \
            f"{cryptocurrency_data[2]}\n" \
