@@ -1,36 +1,6 @@
-"""
-What's the Weather?
-
-Goal:
-Create a program that pulls data from OpenWeatherMap.org that prints out information about the current weather,
-such as the high, the low, and the amount of rain for wherever you live. Depending on how skilled you are,
-you can actually do some neat stuff with this project.
-
-Sub-goals:
-Print out data for the next 5-7 days so you have a 5 day/week long forecast.
-Print the data to another file that you can open up and view at, instead of viewing the
-information in the command line.
-If you know html, write a file that you can print information to so that your project is
-more interesting.
-"""
-import json
-from urllib.request import urlopen
 from datetime import datetime
+import get_json_data
 from misc import apis
-import re
-
-
-def remove_spaces(user_data):
-    """
-    Simple regex to remove all spaces in the user's input
-    :param user_data: city or zip code
-    :return: This should return any values without spaces
-    """
-    fixed_user_input = re.sub(r"\s+", "", user_data)
-    return fixed_user_input
-
-
-# user_input = remove_spaces(original_user_input)
 
 
 def weather_url(user_entry, daily_or_weekly):
@@ -71,8 +41,7 @@ class WeatherConversion:
         :return:
         """
         if days == 1:
-            open_weather = urlopen(self.full_url).read().decode("utf8")
-            read_json = json.loads(open_weather)
+            read_json = get_json_data.grab_json_data(self.full_url)
             location = read_json["name"]
             outside = self.get_outside_outlook(read_json["weather"])
             wind_speed = read_json["wind"]["speed"]
@@ -83,8 +52,7 @@ class WeatherConversion:
                    "Sky: {}\n" \
                    "Wind speed: {} MPH".format(location, current_temp, outside, wind_speed)
         else:
-            open_weather = urlopen(self.full_url).read().decode("utf8")
-            read_json = json.loads(open_weather)
+            read_json = get_json_data.grab_json_data(self.full_url)
             outside = read_json["list"]
             """
             Should be:
