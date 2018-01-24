@@ -39,8 +39,11 @@ def handle_command(command, channel):
         returns back what it needs for clarification.
     """
     response = topics(command)
-    slack_client.api_call("chat.postMessage", channel=channel,
-                          text=response, as_user=True)
+    slack_client.api_call("chat.postMessage",
+                          channel=channel,
+                          text=response,
+                          as_user=True
+                          )
 
 
 def parse_slack_output(slack_rtm_output):
