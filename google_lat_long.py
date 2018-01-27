@@ -22,8 +22,8 @@ def return_lat_long(city_state, use_data=None):
     full_url = PARTIAL_URL + location + END_URL + API_KEY
     data = get_json_data.grab_json_data(full_url)
     location_data = data["results"][0]["geometry"]["location"]  # makes is easier to work with
-    latitude = location_data["lat"]
-    longitude = location_data["lng"]
+    latitude = format(location_data["lat"], ".4f")  # limiting latitude results to 4 decimal places
+    longitude = format(location_data["lng"], ".4f")  # limiting longitude results to 4 decimal places
     if use_data is None:  # if we only want the latitude and longitude, this will be the result
         return f"Latitude: {latitude}\n" \
                f"Longitude: {longitude}"
