@@ -71,4 +71,7 @@ def return_flights_overhead(city_state):
             break
         flight_count += 1  # need to increase the count each time it loops through
 
-    return f"{full_flight_data}"
+    if len(full_flight_data) == 0:
+        return "Errors were present. Check out the URL / Code"
+    else:
+        return f"{full_flight_data}"
