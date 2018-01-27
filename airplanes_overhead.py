@@ -6,7 +6,7 @@ import google_lat_long
 # Setting up URL variables
 PARTIAL_URL = "https://public-api.adsbexchange.com/VirtualRadar/AircraftList.json?lat="
 LNG_URL = "&lng="
-END_URL = "&fDstL=0&fDstU=25"
+END_URL = "&fDstL=0&fDstU=100"
 
 
 def return_flights_overhead(city_state):
@@ -57,15 +57,18 @@ def return_flights_overhead(city_state):
     flight_count = 0  # for the while loop to use
     while flight_count < len(call_sign):
         # calling the named tuple to build a list of lists
-        full_flight_data.append(Flights(airline_name[flight_count],
-                                        model[flight_count],
-                                        flight_id[flight_count],
-                                        call_sign[flight_count],
-                                        flight_origination[flight_count],
-                                        flight_destination[flight_count],
-                                        country[flight_count]
-                                        )
-                                )
+        try:
+            full_flight_data.append(Flights(airline_name[flight_count],
+                                            model[flight_count],
+                                            flight_id[flight_count],
+                                            call_sign[flight_count],
+                                            flight_origination[flight_count],
+                                            flight_destination[flight_count],
+                                            country[flight_count]
+                                            )
+                                    )
+        except IndexError:  # needed to include this because not all call_sign or flight data is present
+            break
         flight_count += 1  # need to increase the count each time it loops through
 
     return f"{full_flight_data}"
