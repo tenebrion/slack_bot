@@ -19,11 +19,11 @@ def weather_url(user_entry, daily_or_weekly):
     number_forecast_days = "&cnt=7"
 
     if user_entry and not daily_or_weekly:
-        return "{}{}{}{}".format(daily_partial_url, zip_code_url, str(user_entry), api_key)
+        return f"{daily_partial_url}{zip_code_url}{str(user_entry)}{api_key}"
     elif not daily_or_weekly:
-        return "{}{}{}{}".format(daily_partial_url, city_url, str(user_entry), api_key)
+        return f"{daily_partial_url}{city_url}{str(user_entry)}{api_key}"
     else:
-        return "{}{}{}{}".format(forecast_partial_url, str(user_entry), number_forecast_days, api_key)
+        return f"{forecast_partial_url}{str(user_entry)}{number_forecast_days}{api_key}"
 
 
 class WeatherConversion:
@@ -47,10 +47,10 @@ class WeatherConversion:
             wind_speed = read_json["wind"]["speed"]
             # wind_direction = self.deg_to_compass(read_json["wind"]["deg"])
             current_temp = self.convert_temp(read_json["main"]["temp"])
-            return "Weather for {}:\n" \
-                   "Current Temperature: {:.2f}\n" \
-                   "Sky: {}\n" \
-                   "Wind speed: {} MPH".format(location, current_temp, outside, wind_speed)
+            return f"Weather for {location}:\n" \
+                   f"Current Temperature: {current_temp:.2f}\n" \
+                   f"Sky: {outside}\n" \
+                   f"Wind speed: {wind_speed} MPH"
         else:
             read_json = get_json_data.grab_json_data(self.full_url)
             outside = read_json["list"]
