@@ -76,16 +76,22 @@ def grab_weather_data(content):
            f"Sunset: {sunset} PM"
 
 
-def slack_response(user_input, use_city=None):
+def slack_response(user_input):
     """
     This method will return our contents to our slack channel
     :param user_input:
-    :param use_city:
     :return:
     """
-    if use_city is None:
-        full_weather_url = weather_url(user_input)
-    else:
-        full_weather_url = weather_url(user_input, True)
+    try:
+        user_zip_code = int(user_input)
+        full_weather_url = weather_url(user_zip_code)
+    except ValueError:
+        grab_city = user_input.partition(",")[0]
+        swap_space_underscore = grab_city.replace(" ", "_")
+        state_or_country = user_input.split(grab_city)[1].replace(" ", "")
+        full_location = swap_space_underscore + state_or_country
+        full_weather_url = weather_url(full_location, True)
+        print(full_weather_url)
+
     values = get_json_data.grab_json_data(full_weather_url)
     return grab_weather_data(values)
