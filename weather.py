@@ -3,108 +3,85 @@ import get_json_data
 from misc import apis
 
 
-def weather_url(user_entry, daily_or_weekly):
+def weather_url(user_entry, city=None):
     """
-    Building out the url since this gets repeated a bit
-    :param user_entry: This will either be a city name or zip code
-    :param daily_or_weekly: This will determine if the user wants a 1 day forecast or 7 days
+    This will return the URL to use.
+    :param user_entry:
+    :param city:
     :return:
     """
     daily_partial_url = "http://api.openweathermap.org/data/2.5/weather?"
-    forecast_partial_url = "http://api.openweathermap.org/data/2.5/forecast/daily?q="
-    # The API key is stored in a separate file using tiny db
     api_key = apis.open_weather()
     zip_code_url = "zip="
     city_url = "q="
-    number_forecast_days = "&cnt=7"
 
-    if user_entry and not daily_or_weekly:
+    if city is None:
         return f"{daily_partial_url}{zip_code_url}{str(user_entry)}{api_key}"
-    elif not daily_or_weekly:
-        return f"{daily_partial_url}{city_url}{str(user_entry)}{api_key}"
     else:
-        return f"{forecast_partial_url}{str(user_entry)}{number_forecast_days}{api_key}"
+        return f"{daily_partial_url}{city_url}{str(user_entry)}{api_key}"
 
 
-class WeatherConversion:
+def convert_temp(temperature):
     """
-    building out the blueprint for the weather values.
-    """
-    def __init__(self, full_url):
-        self.full_url = full_url
-
-    def print_weather(self, days):
-        """
-        This will use all the methods in the class to print out the relevant temperature information
-        :param self:
-        :param days: either 1 day forecast or a 7-day forecast
-        :return:
-        """
-        if days == 1:
-            read_json = get_json_data.grab_json_data(self.full_url)
-            location = read_json["name"]
-            outside = self.get_outside_outlook(read_json["weather"])
-            wind_speed = read_json["wind"]["speed"]
-            # wind_direction = self.deg_to_compass(read_json["wind"]["deg"])
-            current_temp = self.convert_temp(read_json["main"]["temp"])
-            return f"Weather for {location}:\n" \
-                   f"Current Temperature: {current_temp:.2f}\n" \
-                   f"Sky: {outside}\n" \
-                   f"Wind speed: {wind_speed} MPH"
-        else:
-            read_json = get_json_data.grab_json_data(self.full_url)
-            outside = read_json["list"]
-            """
-            Should be:
-            for temp in outside:
-                stuff = temp["weather"]
-                for i in stuff:
-                    print(i['description'])
-
-            Each of these will need to be added to a list or a dictionary to print relationally
-            """
-            return outside
-
-    def get_outside_outlook(self, weather_description):
-        """
-        Returning the outside weather description (e.g. overcast clouds)
-        :return:
-        """
-        for entries in weather_description:
-            return entries["description"]
-
-    def convert_temp(self, temperature):
-        """
-        Simple kelvin to fahrenheit conversion
-        :return:
-        """
-        return 1.8 * (temperature - 273) + 32
-
-    def deg_to_compass(self, num):
-        """
-        This will convert wind speed in degrees to the typical 'compass' directions
-        :return:
-        """
-        convert = int((num / 22.5) + .5)
-        compass = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-                   "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
-        return compass[(convert % 16)]
-
-    def convert_date_time(self, dt):
-        """
-        Simple method to convert unix date/time to something more human
-        return:
-        """
-        return datetime.fromtimestamp(dt).strftime("%Y-%m-%d")
-
-
-def slack_response(user_input, user_want_forecast=False):
-    """
-
-    :param user_input:
-    :param user_want_forecast:
+    Simple kelvin to fahrenheit conversion
     :return:
     """
-    full_weather_url = weather_url(user_input, user_want_forecast)
-    values = WeatherConversion(full_weather_url)
-    return values.print_weather(1)
+    return 1.8 * (temperature - 273) + 32
+
+
+def deg_to_compass(num):
+    """
+    This will convert wind speed in degrees to the typical 'compass' directions
+    :return:
+    """
+    convert = int((num / 22.5) + .5)
+    compass = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+               "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+    return compass[(convert % 16)]
+
+
+def convert_time(date_time):
+    """
+    Simple method to convert unix date/time to human format
+    This is specific to the sunrise / sunset
+    """
+    return datetime.fromtimestamp(date_time).strftime("%H:%M:%S")
+
+
+def grab_weather_data(content):
+    """
+    This will convert the content from the json file to the
+    contents we care about.
+    :param content:
+    :return:
+    """
+    temperature = convert_temp(content["main"]["temp"])
+    weather_description = content["weather"][0]["description"]
+    humidity = content["main"]["humidity"]
+    wind_speed = content["wind"]["speed"]
+    wind_degrees = deg_to_compass(content["wind"]["deg"])
+    location = content["name"]
+    sunrise = convert_time(content["sys"]["sunrise"])
+    sunset = convert_time(content["sys"]["sunset"])
+    deg_symbol = u"\xb0"
+
+    return f"Weather conditions for {location}:\n" \
+           f"Temperature: {temperature}{deg_symbol}F\n" \
+           f"Current View: {weather_description}\n" \
+           f"Humidity: {humidity}%\n" \
+           f"Wind Speed: {wind_speed} MPH\n" \
+           f"Wind Direction: {wind_degrees}\n" \
+           f"Sunrise: {sunrise} AM\n" \
+           f"Sunset: {sunset} PM"
+
+
+def slack_response(user_input, use_city=None):
+    """
+    This method will return our contents to our slack channel
+    :param user_input:
+    :param use_city:
+    :return:
+    """
+    full_weather_url = weather_url(user_input)
+    values = get_json_data.grab_json_data(full_weather_url)
+    return grab_weather_data(values)
