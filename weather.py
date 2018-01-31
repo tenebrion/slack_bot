@@ -55,6 +55,7 @@ def grab_weather_data(content):
     :param content:
     :return:
     """
+    # Wonder if it's better to build this as a named tuple...
     temperature = convert_temp(content["main"]["temp"])
     weather_description = content["weather"][0]["description"]
     humidity = content["main"]["humidity"]
@@ -82,6 +83,9 @@ def slack_response(user_input, use_city=None):
     :param use_city:
     :return:
     """
-    full_weather_url = weather_url(user_input)
+    if use_city is None:
+        full_weather_url = weather_url(user_input)
+    else:
+        full_weather_url = weather_url(user_input, True)
     values = get_json_data.grab_json_data(full_weather_url)
     return grab_weather_data(values)
