@@ -1,6 +1,7 @@
-from datetime import datetime
 import get_json_data
 from misc import apis
+import google_lat_long
+from datetime import datetime
 
 
 def weather_url(user_entry, city=None):
@@ -13,12 +14,15 @@ def weather_url(user_entry, city=None):
     daily_partial_url = "http://api.openweathermap.org/data/2.5/weather?"
     api_key = apis.open_weather()
     zip_code_url = "zip="
-    city_url = "q="
+    # Using latitude + longitude is more accurate than using 'city / state (country)
+    latitude, longitude = google_lat_long.return_lat_long(user_entry, True)
+    lat_url = "lat="
+    lon_url = "&lon="
 
     if city is None:
         return f"{daily_partial_url}{zip_code_url}{str(user_entry)}{api_key}"
     else:
-        return f"{daily_partial_url}{city_url}{str(user_entry)}{api_key}"
+        return f"{daily_partial_url}{lat_url}{latitude}{lon_url}{longitude}{api_key}"
 
 
 def convert_temp(temperature):
@@ -86,12 +90,8 @@ def slack_response(user_input):
         user_zip_code = int(user_input)
         full_weather_url = weather_url(user_zip_code)
     except ValueError:
-        grab_city = user_input.partition(",")[0]
-        swap_space_underscore = grab_city.replace(" ", "_")
-        state_or_country = user_input.split(grab_city)[1].replace(" ", "")
-        full_location = swap_space_underscore + state_or_country
-        full_weather_url = weather_url(full_location, True)
-        print(full_weather_url)
+        full_weather_url = weather_url(user_input, True)
 
+    # Not sure why I set this here instead in the 'grab weather data function
     values = get_json_data.grab_json_data(full_weather_url)
     return grab_weather_data(values)
