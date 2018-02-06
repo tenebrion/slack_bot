@@ -28,7 +28,8 @@ AT_BOT = "<@" + BOT_ID + ">"
 # instantiate Slack
 slack_client = SlackClient(apis.rls())
 
-# load our json file that contains basic commands
+# load my json file that contains help contents
+# I did this as a learning process
 data = json.load(open(r"C:\Users\michael.f.koegel\Documents\GitHub\slack_bot\slack_messages.json"))
 
 
