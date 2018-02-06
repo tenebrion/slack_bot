@@ -64,14 +64,9 @@ def parse_slack_output(slack_rtm_output):
 
 def topics(value):
     """
-    This function is what calls all the other functions depending on what the user wants.
-    There has to be a better way to accomplish this instead of all the if / elif / else.
-    I've tried functions, dictionaries, but I can't get them to initiate function calls
+    This method is what calls all the other methods depending on what the user wants.
     :param value:
     :return: topic
-
-    I need to fix up this section so it works. I'm on to something that may eliminate the
-    nasty if / elif / else
     """
     user_topic = value.partition(" ")[0]
     topic_data = value.split(user_topic)[1].strip()
@@ -111,7 +106,7 @@ def topics(value):
             # This should return the user topic + add the topic info the user is requesting
             return available_topics[user_topic](topic_data)
         except TypeError:
-            # this will return the generic data from the user requested topic
+            # this will call different methods that do not need additional information sent
             return available_topics[user_topic]()
         except KeyError:
             # In the event I don't have a method setup for the user request (or they misspell a topic)
@@ -119,7 +114,8 @@ def topics(value):
 
 
 if __name__ == "__main__":
-    READ_WEBSOCKET_DELAY = 1  # 1 second delay between reading from fire hose
+    # 1 second delay between reading from fire hose
+    READ_WEBSOCKET_DELAY = 1
     if slack_client.rtm_connect():
         print("RLSBot is connected and running!")
         while True:
