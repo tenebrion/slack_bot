@@ -77,7 +77,7 @@ def topics(value):
         "spacex": spacex.return_next_launch,
         "syn-ant": dictionary.return_syn_ant,
         "define": dictionary.return_definition,
-        "books": books.book_info,
+        "books": books.return_book_details,
         "nasa": nasa.nasa,
         "movies": movies.movie_info,
         "weather": weather.slack_response,

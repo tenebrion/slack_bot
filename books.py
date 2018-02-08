@@ -1,15 +1,16 @@
 import get_xml_data
 from misc import apis
 
-API_KEY = apis.books()  # need to get our API key for GoodReads
-BAD_CHARS = "<i></i><br />"
+API_KEY = apis.books()
+# This is called later - they are characters we need to remove from the book synopsis
+BAD_CHARS = ["<i>", "</i>", "<br />", "<b>", "</b>"]
 
 
-def book_info(book):
+def get_book_info(book):
     """
-    This function takes a book name and return all information about the book
+    This will call the get_xml_data function to grab XML data for user book
     :param book:
-    :return: book_title, num_pages, book_author, book_pub_date, book_synopsis
+    :return:
     """
     goodreads_url = "https://www.goodreads.com/book/title.xml?key="
     title_prep = "&title="
@@ -18,21 +19,44 @@ def book_info(book):
 
     # I use the XML parser here, which is why this isn't tied to the get_json_data method
     root = get_xml_data.return_xml_data(full_url)
+    return root
+
+
+def book_info(book):
+    """
+    This will work through our XML data to extract the fields we care about
+    :param book:
+    :return:
+    """
+    # calling get_book_info to grab XML data
+    book_data = get_book_info(book)
 
     # This will provide us the root of the xml file
-    items = root.findall("book")
+    items = book_data.findall("book")
 
-    # XML is super easy to loop through
+    # Looping through the XML file to grab details from the book search
     for item in items:
-        book_title = item.find("title").text  # title of user book
-        book_synopsis = item.find("description").text  # Synopsis for user book
-        # Not sure if there is a better way to strip excess formatting out from the xml file
-        book_synopsis = book_synopsis.replace("<i>", "")  # stripping off <i>
-        book_synopsis = book_synopsis.replace("</i>", "")  # stripping off </i>
-        book_synopsis = book_synopsis.replace("<br />", " ")  # stripping off <br />
-        book_pub_date = item.find('publication_year').text  # year of book publication
-        num_pages = item.find('num_pages').text  # number of pages
-        book_author = item.find('authors/author/name').text  # author of the book
+        book_title = item.find("title").text
+        book_synopsis = item.find("description").text
+        book_pub_date = item.find('publication_year').text
+        num_pages = item.find('num_pages').text
+        book_author = item.find('authors/author/name').text
+
+        # This will clear out all the additional formatting characters from the book synopsis
+        for char in BAD_CHARS:
+            if char in book_synopsis:
+                book_synopsis = book_synopsis.replace(char, "")
+
+        return book_title, book_synopsis, book_pub_date, num_pages, book_author
+
+
+def return_book_details(book):
+    """
+    This will return the info on the book for the user
+    :param book:
+    :return:
+    """
+    book_title, book_synopsis, book_pub_date, num_pages, book_author = book_info(book)
 
     return f"Title: {book_title}\n" \
            f"Number of Pages: {num_pages}\n" \
