@@ -9,7 +9,16 @@ LNG_URL = "&lng="
 END_URL = "&fDstL=0&fDstU=100"
 
 
-def return_flights_overhead(city_state):
+def get_airplane_data(city_state):
+    # need to call the google method to convert user provide city & state (or country) to Lat & Lng
+    latitude, longitude = google_lat_long.return_lat_long(city_state, True)
+    full_url = PARTIAL_URL + latitude + LNG_URL + longitude + END_URL
+    data = get_json_data.grab_json_data(full_url)
+    flight_data = data["acList"]
+    return flight_data
+
+
+def get_flights_overhead(city_state):
     """
     This will attempt to return all flights currently over any city. It calls a google API query
     to get latitude and longitude to build the url. I currently have the radius set to 30 miles from the
@@ -18,6 +27,9 @@ def return_flights_overhead(city_state):
     :param city_state:
     :return:
     """
+    # Need to grab flight data
+    flight_data = get_airplane_data(city_state)
+
     # Variable list to return lots of flights
     flight_origination = []
     flight_destination = []
@@ -27,12 +39,6 @@ def return_flights_overhead(city_state):
     call_sign = []
     country = []
     full_flight_data = []
-
-    # need to call the google method to convert user provide city & state (or country) to Lat & Lng
-    latitude, longitude = google_lat_long.return_lat_long(city_state, True)
-    full_url = PARTIAL_URL + latitude + LNG_URL + longitude + END_URL  # making our full url
-    data = get_json_data.grab_json_data(full_url)  # grabbing the json data
-    flight_data = data["acList"]  # this can be a large file and eat memory
 
     for items in flight_data:  # looping though all keys / values in the list
         for key, value in items.items():
@@ -71,7 +77,17 @@ def return_flights_overhead(city_state):
             break
         flight_count += 1  # need to increase the count each time it loops through
 
-    if len(full_flight_data) == 0:
+    return full_flight_data
+
+
+def return_airplanes_overhead(city_state):
+    """
+    This is the function we call to return the airplanes overhead
+    :param city_state:
+    :return:
+    """
+    all_flights_overhead = get_airplane_data(city_state)
+    if len(all_flights_overhead) == 0:
         return "Errors were present. Check out the URL / Code"
     else:
-        return f"{full_flight_data}"
+        return f"{all_flights_overhead}"

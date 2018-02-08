@@ -86,7 +86,7 @@ def topics(value):
         "bitcoin": bitcoin_prices.gather_bitcoin_values,
         "lat-long": google_lat_long.return_lat_long,
         "shorten": google_shorten_url.return_shorter_url,
-        "airplanes": airplanes_overhead.return_flights_overhead,
+        "airplanes": airplanes_overhead.return_airplanes_overhead,
         "chuck-norris": chuck_norris_jokes.return_chuck_norris_joke,
         "numbers": number_facts.return_number_facts,
         "joke": random_joke.return_joke,
