@@ -9,26 +9,19 @@ LNG_URL = "&lng="
 END_URL = "&fDstL=0&fDstU=100"
 
 
-def get_airplane_data(city_state):
-    # need to call the google method to convert user provide city & state (or country) to Lat & Lng
-    latitude, longitude = google_lat_long.return_lat_long(city_state, True)
-    full_url = PARTIAL_URL + latitude + LNG_URL + longitude + END_URL
-    data = get_json_data.grab_json_data(full_url)
-    flight_data = data["acList"]
-    return flight_data
-
-
 def get_flights_overhead(city_state):
     """
-    This will attempt to return all flights currently over any city. It calls a google API query
-    to get latitude and longitude to build the url. I currently have the radius set to 30 miles from the
-    located provided, but may shrink it. I've seen as many as 150 flights overhead within that zone.
-    That would be excessive data to return
+    This function will grab the data (json) from get_airplane_data. Once it has this data,
+    we extract the useful info and convert it to a namedtuple. This was the easiest way to
+    return 50+ flights at a time.
     :param city_state:
     :return:
     """
     # Need to grab flight data
-    flight_data = get_airplane_data(city_state)
+    latitude, longitude = google_lat_long.return_lat_long(city_state, True)
+    full_url = PARTIAL_URL + latitude + LNG_URL + longitude + END_URL
+    data = get_json_data.grab_json_data(full_url)
+    flight_data = data["acList"]
 
     # Variable list to return lots of flights
     flight_origination = []
@@ -77,17 +70,7 @@ def get_flights_overhead(city_state):
             break
         flight_count += 1  # need to increase the count each time it loops through
 
-    return full_flight_data
-
-
-def return_airplanes_overhead(city_state):
-    """
-    This is the function we call to return the airplanes overhead
-    :param city_state:
-    :return:
-    """
-    all_flights_overhead = get_airplane_data(city_state)
-    if len(all_flights_overhead) == 0:
+    if len(call_sign) == 0:
         return "Errors were present. Check out the URL / Code"
     else:
-        return f"{all_flights_overhead}"
+        return f"{full_flight_data}"
