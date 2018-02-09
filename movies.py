@@ -20,7 +20,6 @@ def prep_title(movie_name):
     # Replacing white spaces with + symbols
     movie_search_format = movie_name.replace(" ", "+")
     url = PARTIAL_URL + API_KEY + QUERY + movie_search_format
-    # let's read the contents of the web page, which is returned in json format
     data = get_json_data.grab_json_data(url)
     # we only want to return title, release date, and info about the movie
     for info in data["results"]:
@@ -34,4 +33,4 @@ def movie_info(movie):
     :return:
     """
     title, release_date, overview = prep_title(movie)
-    return "{} ({}): {}".format(title, release_date, overview)
+    return f"{title} ({release_date}): {overview}"
