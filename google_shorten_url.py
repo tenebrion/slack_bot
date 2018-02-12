@@ -5,6 +5,18 @@ from misc import apis
 # Setting up initial variables
 API_KEY = apis.google()
 FULL_URL = f"https://www.googleapis.com/urlshortener/v1/url?key={API_KEY}"
+bad_chars = ["<", ">"]
+
+
+def remove_extra_chars(text):
+    """
+    This simple function will clean up excess characters
+    :param text:
+    :return:
+    """
+    for char in bad_chars:
+        if char in text:
+            return text.replace(char, "")
 
 
 def return_shorter_url(url):
@@ -14,7 +26,7 @@ def return_shorter_url(url):
     :return:
     """
     # found out that the entries were coming over in this format: <http://www.someurl.com>
-    fixed_url = url.replace("<", "").replace(">", "")
+    fixed_url = remove_extra_chars(url)
     payload = {"longUrl": fixed_url}  # defining the payload info
     headers = {"content-type": "application/json"}  # defining headers
     r = requests.post(FULL_URL, data=json.dumps(payload), headers=headers).json()  # making a post to google API
