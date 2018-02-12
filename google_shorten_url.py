@@ -27,8 +27,9 @@ def return_shorter_url(url):
     """
     # found out that the entries were coming over in this format: <http://www.someurl.com>
     fixed_url = remove_extra_chars(url)
-    payload = {"longUrl": fixed_url}  # defining the payload info
-    headers = {"content-type": "application/json"}  # defining headers
-    r = requests.post(FULL_URL, data=json.dumps(payload), headers=headers).json()  # making a post to google API
+    payload = {"longUrl": fixed_url}
+    headers = {"content-type": "application/json"}
+    # making a post to google API
+    r = requests.post(FULL_URL, data=json.dumps(payload), headers=headers).json()
     return f"Short URL: {r['id']}"
 
