@@ -2,6 +2,7 @@ import get_json_data
 
 # URL for trivia API
 URL = "http://jservice.io/api/random"
+bad_chars = ["<i>", "</i>"]
 
 
 def return_trivia():
@@ -10,9 +11,11 @@ def return_trivia():
     It is then returned
     :return:
     """
-    # grabbing trivia data (json format)
     data = get_json_data.grab_json_data(URL)
     # need to strip out the formatting characters
-    answer = data[0]['answer'].replace("<i>", "").replace("</i>", "")
+    for char in bad_chars:
+        if char in data[0]["answer"]:
+            answer = data[0]["answer"].replace(char, "")
+
     return f"Question: {data[0]['question']}\n" \
            f"Answer: {answer}"
