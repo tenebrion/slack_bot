@@ -1,9 +1,8 @@
 import get_xml_data
 from misc import apis
+import remove_chars
 
 API_KEY = apis.books()
-# This is called later - they are characters we need to remove from the book synopsis
-BAD_CHARS = ["<i>", "</i>", "<br />", "<b>", "</b>"]
 
 
 def get_book_info(book):
@@ -14,7 +13,8 @@ def get_book_info(book):
     """
     goodreads_url = "https://www.goodreads.com/book/title.xml?key="
     title_prep = "&title="
-    book_name = book.lower().replace(" ", "+")  # no spaces allowed. Spaces in name must be changed to a '+'
+    # no spaces allowed. Spaces in name must be changed to a '+'
+    book_name = book.lower().replace(" ", "+")
     full_url = goodreads_url + API_KEY + title_prep + book_name
 
     # I use the XML parser here, which is why this isn't tied to the get_json_data method
@@ -37,15 +37,11 @@ def book_info(book):
     # Looping through the XML file to grab details from the book search
     for item in items:
         book_title = item.find("title").text
-        book_synopsis = item.find("description").text
+        # stripping out extra characters from the synopsis
+        book_synopsis = remove_chars.clean_text(item.find("description").text)
         book_pub_date = item.find('publication_year').text
         num_pages = item.find('num_pages').text
         book_author = item.find('authors/author/name').text
-
-        # This will clear out all the additional formatting characters from the book synopsis
-        for char in BAD_CHARS:
-            if char in book_synopsis:
-                book_synopsis = book_synopsis.replace(char, "")
 
         return book_title, book_synopsis, book_pub_date, num_pages, book_author
 
