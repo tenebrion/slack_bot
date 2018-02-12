@@ -1,3 +1,4 @@
+import remove_chars
 import get_json_data
 
 # URL for random joke
@@ -10,7 +11,7 @@ def return_joke():
     :return:
     """
     data = get_json_data.grab_json_data(URL)  # pulling data (json format)
-    setup = data["setup"].replace("\\", "")  # stripping out the \ in the data
-    punchline = data["punchline"].replace("\\", "")  # stripping out the \ in the data
+    setup = remove_chars.clean_text(data["setup"])
+    punchline = remove_chars.clean_text(data["punchline"])
     return f"{setup}\n" \
            f"{punchline}"
