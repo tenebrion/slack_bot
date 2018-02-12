@@ -1,8 +1,8 @@
+import remove_chars
 import get_json_data
 
 # URL for trivia API
 URL = "http://jservice.io/api/random"
-bad_chars = ["<i>", "</i>"]
 
 
 def return_trivia():
@@ -13,9 +13,7 @@ def return_trivia():
     """
     data = get_json_data.grab_json_data(URL)
     # need to strip out the formatting characters
-    for char in bad_chars:
-        if char in data[0]["answer"]:
-            answer = data[0]["answer"].replace(char, "")
+    answer = remove_chars.clean_text(data[0]["answer"])
 
     return f"Question: {data[0]['question']}\n" \
            f"Answer: {answer}"
