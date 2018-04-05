@@ -2,12 +2,16 @@ import json
 import collections
 import get_json_data
 
-PARTIAL_URL = "https://api.iextrading.com/1.0/stock/"
-END_URL = "/quote"
-
 
 def return_stock_prices(quote):
-    full_url = PARTIAL_URL + quote + END_URL
+    """
+    This function will take a stock symbol, such as aapl and provide the current stock data on it
+    :param quote: This is the symbol the user needs to provide
+    :return: lots of stock data
+    """
+    partial_url = "https://api.iextrading.com/1.0/stock/"
+    end_url = "/quote"
+    full_url = partial_url + quote + end_url
     try:
         r = get_json_data.grab_json_data(full_url)
     except json.decoder.JSONDecodeError:
