@@ -3,8 +3,6 @@ from misc import apis
 
 # Setting up initial URL variables
 API_KEY = apis.movies()
-PARTIAL_URL = "https://api.themoviedb.org/3/search/movie?api_key="
-QUERY = "&query="
 
 
 def prep_title(movie_name):
@@ -17,9 +15,11 @@ def prep_title(movie_name):
     :param movie_name:
     :return: title, release date, overview
     """
+    partial_url = "https://api.themoviedb.org/3/search/movie?api_key="
+    query = "&query="
     # Replacing white spaces with + symbols
     movie_search_format = movie_name.replace(" ", "+")
-    url = PARTIAL_URL + API_KEY + QUERY + movie_search_format
+    url = partial_url + API_KEY + query + movie_search_format
     data = get_json_data.grab_json_data(url)
     # we only want to return title, release date, and info about the movie
     for info in data["results"]:
