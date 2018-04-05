@@ -2,8 +2,6 @@ import get_json_data
 from misc import apis
 
 API_KEY = apis.google()
-PARTIAL_URL = "https://maps.googleapis.com/maps/api/geocode/json?&address="
-END_URL = "&key="
 
 
 def return_lat_long(city_state, use_data=None):
@@ -15,11 +13,13 @@ def return_lat_long(city_state, use_data=None):
     :param use_data:
     :return:
     """
+    partial_url = "https://maps.googleapis.com/maps/api/geocode/json?&address="
+    end_url = "&key="
     split_location = city_state.split()
     city = split_location[0]
     state = split_location[1]
     location = city.lower() + "+" + state.lower()  # making sure it's lowercase and space is swapped to +
-    full_url = PARTIAL_URL + location + END_URL + API_KEY
+    full_url = partial_url + location + end_url + API_KEY
     data = get_json_data.grab_json_data(full_url)
     location_data = data["results"][0]["geometry"]["location"]  # makes is easier to work with
     latitude = format(location_data["lat"], ".4f")  # limiting latitude results to 4 decimal places
