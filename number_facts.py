@@ -1,14 +1,13 @@
 import get_json_data
 
-# simple url to call
-URL = "http://numbersapi.com/random?json"
-
 
 def return_number_facts():
     """
     This will return a random number and a fact containing that number
-    :return:
+    :return: data['number'], data['text']
     """
-    data = get_json_data.grab_json_data(URL)
+    # simple url to call
+    url = "http://numbersapi.com/random?json"
+    data = get_json_data.grab_json_data(url)
     return f"Number: {data['number']}\n" \
            f"Fact: {data['text']}"
