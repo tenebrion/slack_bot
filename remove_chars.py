@@ -2,7 +2,7 @@ def clean_text(content):
     """
     This function will take text and strip out excess characters
     :param content:
-    :return:
+    :return: content
     """
     bad_chars = [
         "<i>",
