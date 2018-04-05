@@ -1,5 +1,5 @@
 # slack_bot
-Chat bot for slack
+A bot for slack - more of an information bot.
 
 The main program is run through bot.py
 
@@ -14,3 +14,5 @@ you'll need to register with each platform to obtain API keys / accounts.
 
 I'm continually tweaking the formatting / layout as I learn new techniques. For example, in the bot.py file 
 (which is the main file), I setup the list of actions in a dictionary with the value set to the method call.
+
+I'm always open to suggestions and feedback. It's those comments that help us newer coders learn and grow.
